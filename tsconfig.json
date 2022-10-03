@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "ES2022",
+        "moduleResolution": "Node",
+        "jsx": "react-jsx",
+        "lib": ["ES2022", "DOM"]
+    },
+    "include": ["source/**/*"],
+    "typedocOptions": {
+        "name": "ECharts JSX",
+        "excludeExternals": true,
+        "excludePrivate": true,
+        "readme": "./ReadMe.md",
+        "out": "docs/"
+    }
+}
