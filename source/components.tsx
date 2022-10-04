@@ -4,9 +4,9 @@ import type {
     TitleComponentOption,
     LegendComponentOption,
     TooltipComponentOption,
-    SeriesOption,
     XAXisComponentOption,
-    YAXisComponentOption
+    YAXisComponentOption,
+    RegisteredSeriesOption
 } from 'echarts';
 import * as renderers from 'echarts/renderers';
 import * as charts from 'echarts/charts';
@@ -24,11 +24,13 @@ type ECModuleName =
     | keyof typeof components;
 
 export interface EC<T = {}> extends FC<T> {
-    optionOf?: (props: PropsWithChildren<T>) => ECBasicOption;
+    optionOf: (props: PropsWithChildren<T>) => ECBasicOption;
     loadModule?: () => Promise<ECExtensions>;
 }
 
-const optionOf = <T,>({ children, ...props }: PropsWithChildren<T>) => props;
+const optionCreator =
+    <T,>(key: string) =>
+    ({ children, ...props }: PropsWithChildren<T>) => ({ [key]: props });
 
 function moduleLoader(names: ECModuleName[]) {
     return async (): Promise<ECExtensions> => {
@@ -39,7 +41,12 @@ function moduleLoader(names: ECModuleName[]) {
 }
 
 export type TitleProps = Omit<TitleComponentOption, 'text'>;
-
+/**
+ * @example
+ * ```tsx
+ * <Title>Hello, ECharts JSX!</Title>
+ * ```
+ */
 export const Title: EC<TitleProps> = () => <></>;
 
 Title.optionOf = ({ children, ...props }) => ({
@@ -47,16 +54,26 @@ Title.optionOf = ({ children, ...props }) => ({
 });
 
 Title.loadModule = moduleLoader(['TitleComponent']);
-
+/**
+ * @example
+ * ```tsx
+ * <Legend data={['sales']} />
+ * ```
+ */
 export const Legend: EC<LegendComponentOption> = () => <></>;
 
-Legend.optionOf = optionOf;
+Legend.optionOf = optionCreator('legend');
 
 Legend.loadModule = moduleLoader(['LegendComponent']);
-
+/**
+ * @example
+ * ```tsx
+ * <Tooltip />
+ * ```
+ */
 export const Tooltip: EC<TooltipComponentOption> = () => <></>;
 
-Tooltip.optionOf = optionOf;
+Tooltip.optionOf = optionCreator('tooltip');
 
 Tooltip.loadModule = moduleLoader([
     'UniversalTransition',
@@ -64,18 +81,45 @@ Tooltip.loadModule = moduleLoader([
     'TooltipComponent'
 ]);
 
-export const Series: EC<SeriesOption> = () => <></>;
+export type BarSeriesProps = Omit<RegisteredSeriesOption['bar'], 'type'>;
+/**
+ * @example
+ * ```tsx
+ * <BarSeries name="sales" data={[5, 20, 36, 10, 10, 20]} />
+ * ```
+ */
+export const BarSeries: EC<BarSeriesProps> = () => <></>;
 
-Series.loadModule = moduleLoader(['DatasetComponent', 'TransformComponent']);
+BarSeries.optionOf = ({ children, ...props }) => ({
+    series: [{ ...props, type: 'bar' }]
+});
 
+BarSeries.loadModule = moduleLoader([
+    'DatasetComponent',
+    'TransformComponent',
+    'BarChart'
+]);
+/**
+ * @example
+ * ```tsx
+ * <XAxis
+ *     data={['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']}
+ * />
+ * ```
+ */
 export const XAxis: EC<XAXisComponentOption> = () => <></>;
 
-XAxis.optionOf = optionOf;
+XAxis.optionOf = optionCreator('xAxis');
 
-XAxis.loadModule = moduleLoader(['BarChart', 'GridComponent']);
-
+XAxis.loadModule = moduleLoader(['GridComponent']);
+/**
+ * @example
+ * ```tsx
+ * <YAxis />
+ * ```
+ */
 export const YAxis: EC<YAXisComponentOption> = () => <></>;
 
-YAxis.optionOf = optionOf;
+YAxis.optionOf = optionCreator('yAxis');
 
-YAxis.loadModule = moduleLoader(['BarChart', 'GridComponent']);
+YAxis.loadModule = moduleLoader(['GridComponent']);

@@ -5,10 +5,9 @@ import {
     PureComponent,
     isValidElement
 } from 'react';
-import type { SeriesOption } from 'echarts';
 import { EChartsType, use, init } from 'echarts/core';
 
-import { EC, Series } from './components';
+import { EC } from './components';
 
 export * from './components';
 
@@ -42,30 +41,24 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
     componentDidUpdate() {
         if (!this.state.imported) return;
 
-        const { children } = this.props,
-            series: SeriesOption[] = [];
-
-        const options = Children.toArray(children).map(node => {
+        const options = Children.toArray(this.props.children).map(node => {
             if (!isValidElement<PropsWithChildren<{}>>(node)) return;
 
             const { type, props } = node;
 
-            switch (type) {
-                case Series: {
-                    const { children, ...option } = props;
-
-                    series.push(option);
-                    break;
-                }
-                default:
-                    return (type as EC).optionOf?.(props);
-            }
+            return (type as EC).optionOf(props);
         });
+        const option = options.reduce((sum, item) => {
+            const [key, value] = Object.entries(item)[0];
 
-        this.core?.setOption({
-            ...options.reduce((sum, item) => ({ ...sum, ...item }), {}),
-            series
-        });
+            if (!Array.isArray(value)) return { ...sum, ...item };
+
+            ((sum[key] ||= []) as any[]).push(...value);
+
+            return sum;
+        }, {});
+
+        this.core?.setOption(option);
     }
 
     render() {
