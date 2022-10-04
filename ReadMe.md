@@ -23,7 +23,7 @@ Origin: [ECharts official example][6]
 ```tsx
 import { render } from 'react-dom';
 import {
-    ECharts,
+    CanvasCharts,
     Title,
     Legend,
     Tooltip,
@@ -33,7 +33,7 @@ import {
 } from 'echarts-jsx';
 
 render(
-    <ECharts>
+    <CanvasCharts>
         <Title>ECharts Getting Started Example</Title>
 
         <Legend data={['sales']} />
@@ -53,7 +53,7 @@ render(
         <YAxis />
 
         <Series name="sales" type="bar" data={[5, 20, 36, 10, 10, 20]} />
-    </ECharts>,
+    </CanvasCharts>,
     document.body
 );
 ```
