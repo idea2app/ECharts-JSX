@@ -8,20 +8,11 @@ import type {
     YAXisComponentOption,
     RegisteredSeriesOption
 } from 'echarts';
-import * as renderers from 'echarts/renderers';
-import * as charts from 'echarts/charts';
-import * as features from 'echarts/features';
 import * as components from 'echarts/components';
 
 export type ECBasicOption = Parameters<EChartsType['setOption']>[0];
 
 type ECExtensions = Parameters<typeof use>[0];
-
-type ECModuleName =
-    | keyof typeof renderers
-    | keyof typeof charts
-    | keyof typeof features
-    | keyof typeof components;
 
 export interface EC<T = {}> extends FC<T> {
     optionOf: (props: PropsWithChildren<T>) => ECBasicOption;
@@ -32,7 +23,7 @@ const optionCreator =
     <T,>(key: string) =>
     ({ children, ...props }: PropsWithChildren<T>) => ({ [key]: props });
 
-function moduleLoader(names: ECModuleName[]) {
+function componentLoader(names: (keyof typeof components)[]) {
     return async (): Promise<ECExtensions> => {
         const components = await import('echarts/components');
 
@@ -53,7 +44,8 @@ Title.optionOf = ({ children, ...props }) => ({
     title: { ...props, text: children }
 });
 
-Title.loadModule = moduleLoader(['TitleComponent']);
+Title.loadModule = componentLoader(['TitleComponent']);
+
 /**
  * @example
  * ```tsx
@@ -64,7 +56,8 @@ export const Legend: EC<LegendComponentOption> = () => <></>;
 
 Legend.optionOf = optionCreator('legend');
 
-Legend.loadModule = moduleLoader(['LegendComponent']);
+Legend.loadModule = componentLoader(['LegendComponent']);
+
 /**
  * @example
  * ```tsx
@@ -75,11 +68,14 @@ export const Tooltip: EC<TooltipComponentOption> = () => <></>;
 
 Tooltip.optionOf = optionCreator('tooltip');
 
-Tooltip.loadModule = moduleLoader([
-    'UniversalTransition',
-    'LabelLayout',
-    'TooltipComponent'
-]);
+Tooltip.loadModule = async () => {
+    const [{ LabelLayout, UniversalTransition }, components] =
+        await Promise.all([
+            import('echarts/features'),
+            componentLoader(['TooltipComponent'])()
+        ]);
+    return [LabelLayout, UniversalTransition, ...(components as any[])];
+};
 
 export type BarSeriesProps = Omit<RegisteredSeriesOption['bar'], 'type'>;
 /**
@@ -94,11 +90,14 @@ BarSeries.optionOf = ({ children, ...props }) => ({
     series: [{ ...props, type: 'bar' }]
 });
 
-BarSeries.loadModule = moduleLoader([
-    'DatasetComponent',
-    'TransformComponent',
-    'BarChart'
-]);
+BarSeries.loadModule = async () => {
+    const [{ BarChart }, components] = await Promise.all([
+        import('echarts/charts'),
+        componentLoader(['DatasetComponent', 'TransformComponent'])()
+    ]);
+    return [BarChart, ...(components as any[])];
+};
+
 /**
  * @example
  * ```tsx
@@ -111,7 +110,8 @@ export const XAxis: EC<XAXisComponentOption> = () => <></>;
 
 XAxis.optionOf = optionCreator('xAxis');
 
-XAxis.loadModule = moduleLoader(['GridComponent']);
+XAxis.loadModule = componentLoader(['GridComponent']);
+
 /**
  * @example
  * ```tsx
@@ -122,4 +122,4 @@ export const YAxis: EC<YAXisComponentOption> = () => <></>;
 
 YAxis.optionOf = optionCreator('yAxis');
 
-YAxis.loadModule = moduleLoader(['GridComponent']);
+YAxis.loadModule = componentLoader(['GridComponent']);
