@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript",
@@ -22,29 +22,25 @@
     },
     "source": "source/index.tsx",
     "types": "dist/index.d.ts",
-    "module": "dist/index.esm.js",
-    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "main": "dist/index.umd.js",
     "dependencies": {
-        "@swc/helpers": "^0.4.11"
+        "echarts": "^5.4.0"
     },
     "peerDependencies": {
-        "echarts": "^5.0.0",
         "react": ">=16.0.0"
     },
     "devDependencies": {
-        "@parcel/packager-ts": "~2.6.2",
-        "@parcel/transformer-typescript-types": "~2.6.2",
         "@types/react": "^17.0.50",
-        "echarts": "^5.4.0",
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
+        "microbundle": "^0.15.1",
         "open-cli": "^7.0.1",
-        "parcel": "~2.6.2",
         "prettier": "^2.7.1",
         "react": "^17.0.2",
         "typedoc": "^0.23.15",
         "typedoc-plugin-mdn-links": "^2.0.0",
-        "typescript": "~4.7.4"
+        "typescript": "~4.8.4"
     },
     "prettier": {
         "singleQuote": true,
@@ -56,15 +52,10 @@
         "*.{md,json,yml,ts,tsx}": "prettier --write"
     },
     "browserslist": "> 0.5%, last 2 versions, not dead, IE 11",
-    "targets": {
-        "main": {
-            "optimize": true
-        }
-    },
     "scripts": {
         "prepare": "husky install",
         "test": "lint-staged",
-        "pack-dist": "rm -rf dist/  &&  parcel build",
+        "pack-dist": "rm -rf dist/  &&  microbundle",
         "pack-docs": "rm -rf docs/  &&  typedoc source/",
         "build": "npm run pack-dist  &&  npm run pack-docs",
         "start": "npm run pack-docs  &&  open-cli docs/index.html",

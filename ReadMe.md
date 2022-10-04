@@ -11,7 +11,7 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
 ### Installation
 
 ```shell
-npm i echarts-jsx react react-dom
+npm i echarts-jsx echarts react react-dom
 ```
 
 ### Simple example
@@ -23,17 +23,17 @@ Origin: [ECharts official example][6]
 ```tsx
 import { render } from 'react-dom';
 import {
-    ECharts,
+    CanvasCharts,
     Title,
     Legend,
     Tooltip,
-    Series,
     XAxis,
     YAxis
+    BarSeries,
 } from 'echarts-jsx';
 
 render(
-    <ECharts>
+    <CanvasCharts>
         <Title>ECharts Getting Started Example</Title>
 
         <Legend data={['sales']} />
@@ -52,8 +52,8 @@ render(
         />
         <YAxis />
 
-        <Series name="sales" type="bar" data={[5, 20, 36, 10, 10, 20]} />
-    </ECharts>,
+        <BarSeries name="sales" data={[5, 20, 36, 10, 10, 20]} />
+    </CanvasCharts>,
     document.body
 );
 ```
