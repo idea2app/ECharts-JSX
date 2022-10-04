@@ -6,19 +6,26 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
 
 [![NPM](https://nodei.co/npm/echarts-jsx.png?downloads=true&downloadRank=true&stars=true)][5]
 
+## Features
+
+-   [x] All kinds of options can be write in **JSX syntax**
+    -   [x] Bar chart
+    -   [ ] Pie chart
+-   [x] Async-load required modules automatically
+
 ## Quick start
 
 ### Installation
 
 ```shell
-npm i echarts-jsx echarts react react-dom
+npm i echarts-jsx react react-dom
 ```
 
 ### Simple example
 
 Origin: [ECharts official example][6]
 
-[![Edit ECharts-React](https://codesandbox.io/static/img/play-codesandbox.svg)][7]
+[![Edit ECharts-JSX-demo](https://codesandbox.io/static/img/play-codesandbox.svg)][7]
 
 ```tsx
 import { render } from 'react-dom';
@@ -63,6 +70,11 @@ render(
 1. https://recharts.org/
 2. https://github.com/somonus/react-echarts
 3. https://github.com/idea2app/ECharts-model
+4. https://codesandbox.io/s/echarts-react-yoxstm
+
+## User cases
+
+1. [China Open-source Map](https://test.kaiyuanshe.cn/organization/)
 
 [1]: https://facebook.github.io/jsx/
 [2]: https://echarts.apache.org/
@@ -70,4 +82,4 @@ render(
 [4]: https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml
 [5]: https://nodei.co/npm/echarts-jsx/
 [6]: https://echarts.apache.org/handbook/en/get-started/
-[7]: https://codesandbox.io/s/echarts-react-yoxstm?autoresize=1&fontsize=14&theme=dark
+[7]: https://codesandbox.io/s/ECharts-JSX-demo?autoresize=1&fontsize=14&module=%2Fsrc%2FBar.tsx&theme=dark

@@ -4,3 +4,4 @@ yarn.lock
 .parcel-cache/
 dist/
 docs/
+.vscode/settings.json
