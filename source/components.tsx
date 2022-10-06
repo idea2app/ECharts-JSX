@@ -1,29 +1,16 @@
-import { PropsWithChildren, FC } from 'react';
-import { EChartsType, use } from 'echarts/core';
 import type {
     TitleComponentOption,
     LegendComponentOption,
     TooltipComponentOption,
     XAXisComponentOption,
     YAXisComponentOption,
-    RegisteredSeriesOption
+    ToolboxComponentOption
 } from 'echarts';
 import * as components from 'echarts/components';
 
-export type ECBasicOption = Parameters<EChartsType['setOption']>[0];
+import { ECExtensions, EC, optionCreator } from './charts';
 
-type ECExtensions = Parameters<typeof use>[0];
-
-export interface EC<T = {}> extends FC<T> {
-    optionOf: (props: PropsWithChildren<T>) => ECBasicOption;
-    loadModule?: () => Promise<ECExtensions>;
-}
-
-const optionCreator =
-    <T,>(key: string) =>
-    ({ children, ...props }: PropsWithChildren<T>) => ({ [key]: props });
-
-function componentLoader(names: (keyof typeof components)[]) {
+export function componentLoader(names: (keyof typeof components)[]) {
     return async (): Promise<ECExtensions> => {
         const components = await import('echarts/components');
 
@@ -49,6 +36,18 @@ Title.loadModule = componentLoader(['TitleComponent']);
 /**
  * @example
  * ```tsx
+ * <Toolbox feature={{ saveAsImage: {} }} />
+ * ```
+ */
+export const Toolbox: EC<ToolboxComponentOption> = () => <></>;
+
+Toolbox.optionOf = optionCreator('toolbox');
+
+Toolbox.loadModule = componentLoader(['ToolboxComponent']);
+
+/**
+ * @example
+ * ```tsx
  * <Legend data={['sales']} />
  * ```
  */
@@ -69,33 +68,11 @@ export const Tooltip: EC<TooltipComponentOption> = () => <></>;
 Tooltip.optionOf = optionCreator('tooltip');
 
 Tooltip.loadModule = async () => {
-    const [{ LabelLayout, UniversalTransition }, components] =
-        await Promise.all([
-            import('echarts/features'),
-            componentLoader(['TooltipComponent'])()
-        ]);
-    return [LabelLayout, UniversalTransition, ...(components as any[])];
-};
-
-export type BarSeriesProps = Omit<RegisteredSeriesOption['bar'], 'type'>;
-/**
- * @example
- * ```tsx
- * <BarSeries name="sales" data={[5, 20, 36, 10, 10, 20]} />
- * ```
- */
-export const BarSeries: EC<BarSeriesProps> = () => <></>;
-
-BarSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'bar' }]
-});
-
-BarSeries.loadModule = async () => {
-    const [{ BarChart }, components] = await Promise.all([
-        import('echarts/charts'),
-        componentLoader(['DatasetComponent', 'TransformComponent'])()
+    const [{ LabelLayout }, components] = await Promise.all([
+        import('echarts/features'),
+        componentLoader(['TooltipComponent'])()
     ]);
-    return [BarChart, ...(components as any[])];
+    return [LabelLayout, ...(components as any[])];
 };
 
 /**
