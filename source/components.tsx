@@ -1,10 +1,12 @@
 import type {
     TitleComponentOption,
+    ToolboxComponentOption,
     LegendComponentOption,
+    VisualMapComponentOption,
     TooltipComponentOption,
+    GridComponentOption,
     XAXisComponentOption,
-    YAXisComponentOption,
-    ToolboxComponentOption
+    YAXisComponentOption
 } from 'echarts';
 import * as components from 'echarts/components';
 
@@ -60,6 +62,18 @@ Legend.loadModule = componentLoader(['LegendComponent']);
 /**
  * @example
  * ```tsx
+ * <VisualMap calculable top="middle" right={10} color={['red', 'yellow']} />
+ * ```
+ */
+export const VisualMap: EC<VisualMapComponentOption> = () => <></>;
+
+VisualMap.optionOf = optionCreator('visualMap');
+
+VisualMap.loadModule = componentLoader(['VisualMapComponent']);
+
+/**
+ * @example
+ * ```tsx
  * <Tooltip />
  * ```
  */
@@ -74,6 +88,18 @@ Tooltip.loadModule = async () => {
     ]);
     return [LabelLayout, ...(components as any[])];
 };
+
+/**
+ * @example
+ * ```tsx
+ * <Grid left="10%" right="10%" bottom="15%" />
+ * ```
+ */
+export const Grid: EC<GridComponentOption> = () => <></>;
+
+Grid.optionOf = optionCreator('grid');
+
+Grid.loadModule = componentLoader(['GridComponent']);
 
 /**
  * @example
