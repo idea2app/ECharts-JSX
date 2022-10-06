@@ -9,8 +9,12 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
 ## Features
 
 -   [x] All kinds of options can be write in **JSX syntax**
+    -   [x] Line chart
+    -   [x] Scatter chart
     -   [x] Bar chart
-    -   [ ] Pie chart
+    -   [ ] Candle Stick chart
+    -   [x] Pie chart
+    -   [ ] Radar chart
 -   [x] Async-load required modules automatically
 
 ## Quick start
@@ -35,8 +39,8 @@ import {
     Legend,
     Tooltip,
     XAxis,
-    YAxis
-    BarSeries,
+    YAxis,
+    BarSeries
 } from 'echarts-jsx';
 
 render(
@@ -82,4 +86,4 @@ render(
 [4]: https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml
 [5]: https://nodei.co/npm/echarts-jsx/
 [6]: https://echarts.apache.org/handbook/en/get-started/
-[7]: https://codesandbox.io/s/ECharts-JSX-demo?autoresize=1&fontsize=14&module=%2Fsrc%2FBar.tsx&theme=dark
+[7]: https://codesandbox.io/s/echarts-jsx-demo-bouwsf?autoresize=1&fontsize=14&module=%2Fsrc%2FBar.tsx&theme=dark

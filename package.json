@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript",
@@ -20,7 +20,7 @@
     "bugs": {
         "url": "https://github.com/idea2app/ECharts-JSX/issues"
     },
-    "source": "source/index.tsx",
+    "source": "source/index.ts",
     "types": "dist/index.d.ts",
     "module": "dist/index.js",
     "main": "dist/index.umd.js",
@@ -35,7 +35,7 @@
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
         "microbundle": "^0.15.1",
-        "open-cli": "^7.0.1",
+        "open-cli": "^7.1.0",
         "prettier": "^2.7.1",
         "react": "^17.0.2",
         "typedoc": "^0.23.15",
