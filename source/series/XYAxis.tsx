@@ -1,7 +1,35 @@
 import { RegisteredSeriesOption } from 'echarts';
 
-import { EC } from './charts';
-import { componentLoader } from './components';
+import { EC } from '../charts';
+import { componentLoader } from '../components';
+
+export type ScatterSeriesProps = Omit<
+    RegisteredSeriesOption['scatter'],
+    'type'
+>;
+/**
+ * @example
+ * ```tsx
+ * <ScatterSeries data={[
+ *     [10.0, 8.04],
+ *     [8.07, 6.95],
+ *     [13.0, 7.58]
+ * ]} />
+ * ```
+ */
+export const ScatterSeries: EC<ScatterSeriesProps> = () => <></>;
+
+ScatterSeries.optionOf = ({ children, ...props }) => ({
+    series: [{ ...props, type: 'scatter' }]
+});
+
+ScatterSeries.loadModule = async () => {
+    const [{ ScatterChart }, { UniversalTransition }] = await Promise.all([
+        import('echarts/charts'),
+        import('echarts/features')
+    ]);
+    return [ScatterChart, UniversalTransition];
+};
 
 export type LineSeriesProps = Omit<RegisteredSeriesOption['line'], 'type'>;
 /**
@@ -47,57 +75,31 @@ BarSeries.loadModule = async () => {
     return [BarChart, UniversalTransition, ...(components as any[])];
 };
 
-export type PieSeriesProps = Omit<RegisteredSeriesOption['pie'], 'type'>;
-/**
- * @example
- * ```tsx
- * <PieSeries data={[
- *     { value: 1048, name: 'Search Engine' },
- *     { value: 735, name: 'Direct' },
- *     { value: 580, name: 'Email' },
- *     { value: 484, name: 'Union Ads' },
- *     { value: 300, name: 'Video Ads' }
- * ]} />
- * ```
- */
-export const PieSeries: EC<PieSeriesProps> = () => <></>;
-
-PieSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'pie' }]
-});
-
-PieSeries.loadModule = async () => {
-    const [{ PieChart }, { UniversalTransition }] = await Promise.all([
-        import('echarts/charts'),
-        import('echarts/features')
-    ]);
-    return [PieChart, UniversalTransition];
-};
-
-export type ScatterSeriesProps = Omit<
-    RegisteredSeriesOption['scatter'],
+export type CandlestickSeriesProps = Omit<
+    RegisteredSeriesOption['candlestick'],
     'type'
 >;
 /**
  * @example
  * ```tsx
- * <ScatterSeries data={[
- *     [10.0, 8.04],
- *     [8.07, 6.95],
- *     [13.0, 7.58]
+ * <CandlestickSeries data={[
+ *     [20, 34, 10, 38],
+ *     [40, 35, 30, 50],
+ *     [31, 38, 33, 44],
+ *     [38, 15, 5, 42]
  * ]} />
  * ```
  */
-export const ScatterSeries: EC<ScatterSeriesProps> = () => <></>;
+export const CandlestickSeries: EC<CandlestickSeriesProps> = () => <></>;
 
-ScatterSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'scatter' }]
+CandlestickSeries.optionOf = ({ children, ...props }) => ({
+    series: [{ ...props, type: 'candlestick' }]
 });
 
-ScatterSeries.loadModule = async () => {
-    const [{ ScatterChart }, { UniversalTransition }] = await Promise.all([
+CandlestickSeries.loadModule = async () => {
+    const [{ CandlestickChart }, { UniversalTransition }] = await Promise.all([
         import('echarts/charts'),
         import('echarts/features')
     ]);
-    return [ScatterChart, UniversalTransition];
+    return [CandlestickChart, UniversalTransition];
 };

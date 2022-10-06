@@ -12,9 +12,9 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
     -   [x] Line chart
     -   [x] Scatter chart
     -   [x] Bar chart
-    -   [ ] Candle Stick chart
+    -   [x] Candle Stick chart
     -   [x] Pie chart
-    -   [ ] Radar chart
+    -   [x] Radar chart
 -   [x] Async-load required modules automatically
 
 ## Quick start
