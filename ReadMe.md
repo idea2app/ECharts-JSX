@@ -9,14 +9,22 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
 ## Features
 
 -   [x] All kinds of options can be write in **JSX syntax**
+    -   [x] Parallel chart
     -   [x] Line chart
     -   [x] Scatter chart
     -   [x] Bar chart
     -   [x] Candle Stick chart
     -   [x] Pie chart
     -   [x] Radar chart
+    -   [x] Sunburst chart
+    -   [x] Gauge chart
     -   [x] Tree chart
     -   [x] Tree Map chart
+    -   [x] Sankey chart
+    -   [x] Heat Map chart
+    -   [x] Graph chart
+    -   [x] Funnel chart
+    -   [x] Theme River chart
 -   [x] Async-load required modules automatically
 
 ## Quick start
