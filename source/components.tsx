@@ -8,17 +8,9 @@ import type {
     XAXisComponentOption,
     YAXisComponentOption
 } from 'echarts';
-import * as components from 'echarts/components';
 
-import { ECExtensions, EC, optionCreator } from './charts';
-
-export function componentLoader(names: (keyof typeof components)[]) {
-    return async (): Promise<ECExtensions> => {
-        const components = await import('echarts/components');
-
-        return names.map(name => components[name]);
-    };
-}
+import { EC } from './charts';
+import { optionCreator, componentLoader } from './utility';
 
 export type TitleProps = Omit<TitleComponentOption, 'text'>;
 /**
@@ -82,11 +74,11 @@ export const Tooltip: EC<TooltipComponentOption> = () => <></>;
 Tooltip.optionOf = optionCreator('tooltip');
 
 Tooltip.loadModule = async () => {
-    const [{ LabelLayout }, components] = await Promise.all([
+    const [{ LabelLayout }, { TooltipComponent }] = await Promise.all([
         import('echarts/features'),
-        componentLoader(['TooltipComponent'])()
+        import('echarts/components')
     ]);
-    return [LabelLayout, ...(components as any[])];
+    return [LabelLayout, TooltipComponent];
 };
 
 /**
