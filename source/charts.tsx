@@ -73,12 +73,17 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
 
                 return Object.entries((type as EC).optionOf(props));
             })
-            .flat();
+            .flat() as [string, ECBasicOption][];
 
-        this.core?.setOption({
-            ...splittedProps.charts,
-            ...groupBy(options, ([key]) => key)
-        });
+        const optionGroup = groupBy(options, ([key]) => key);
+
+        const option = Object.fromEntries(
+            Object.entries(optionGroup).map(([key, list]) => [
+                key,
+                list.map(([{}, option]) => option)
+            ])
+        );
+        this.core?.setOption({ ...splittedProps.charts, ...option });
     }
 
     render() {
@@ -88,7 +93,11 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
             <div
                 {...splittedProps.container}
                 ref={root => root && (this.core = init(root))}
-                style={{ minHeight: '50vh', ...splittedProps.container.style }}
+                style={{
+                    width: '100%',
+                    minHeight: '50vh',
+                    ...splittedProps.container.style
+                }}
             />
         ) : (
             <></>

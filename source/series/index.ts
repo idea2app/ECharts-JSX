@@ -1,3 +1,4 @@
-export * from './XYAxis';
+export * from './Axis';
 export * from './Polar';
 export * from './Tree';
+export * from './Graph';

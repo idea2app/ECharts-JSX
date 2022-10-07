@@ -1,7 +1,27 @@
 import type { RegisteredSeriesOption } from 'echarts/types/dist/shared';
 
 import { EC } from '../charts';
-import { seriesOptionCreator, componentLoader } from '../utility';
+import { seriesOptionCreator, chartLoader, componentLoader } from '../utility';
+
+export type ParallelSeriesProps = Omit<
+    RegisteredSeriesOption['parallel'],
+    'type'
+>;
+/**
+ * @example
+ * ```tsx
+ * <ParallelSeries data={[
+ *     [12.99, 100, 82, 'Good'],
+ *     [9.99, 80, 77, 'OK'],
+ *     [20, 120, 60, 'Excellent']
+ * ]} />
+ * ```
+ */
+export const ParallelSeries: EC<ParallelSeriesProps> = () => <></>;
+
+ParallelSeries.optionOf = seriesOptionCreator('parallel');
+
+ParallelSeries.loadModule = chartLoader(['ParallelChart']);
 
 export type ScatterSeriesProps = Omit<
     RegisteredSeriesOption['scatter'],

@@ -5,8 +5,11 @@ import type {
     VisualMapComponentOption,
     TooltipComponentOption,
     GridComponentOption,
+    SingleAxisComponentOption,
+    ParallelComponentOption,
     XAXisComponentOption,
-    YAXisComponentOption
+    YAXisComponentOption,
+    CalendarComponentOption
 } from 'echarts';
 
 import { EC } from './charts';
@@ -93,6 +96,26 @@ Grid.optionOf = optionCreator('grid');
 
 Grid.loadModule = componentLoader(['GridComponent']);
 
+export const SingleAxis: EC<SingleAxisComponentOption> = () => <></>;
+
+SingleAxis.optionOf = optionCreator('singleAxis');
+
+SingleAxis.loadModule = componentLoader(['SingleAxisComponent']);
+
+/**
+ * @example
+ * ```tsx
+ * <ParallelAxis dim={0} name="Price" />
+ * <ParallelAxis dim={1} name="Net Weight" />
+ * <ParallelAxis dim={2} name="Amount" />
+ * ```
+ */
+export const ParallelAxis: EC<ParallelComponentOption> = () => <></>;
+
+ParallelAxis.optionOf = optionCreator('parallelAxis');
+
+ParallelAxis.loadModule = componentLoader(['ParallelComponent']);
+
 /**
  * @example
  * ```tsx
@@ -118,3 +141,18 @@ export const YAxis: EC<YAXisComponentOption> = () => <></>;
 YAxis.optionOf = optionCreator('yAxis');
 
 YAxis.loadModule = componentLoader(['GridComponent']);
+
+/**
+ * @example
+ * ```tsx
+ * <Calendar
+ *     cellSize={['auto', 13]}
+ *     range="2016"
+ *     yearLabel={{ show: false }}
+ *  />
+ */
+export const Calendar: EC<CalendarComponentOption> = () => <></>;
+
+Calendar.optionOf = optionCreator('calendar');
+
+Calendar.loadModule = componentLoader(['CalendarComponent']);
