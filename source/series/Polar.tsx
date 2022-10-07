@@ -1,7 +1,10 @@
-import { RegisteredSeriesOption } from 'echarts';
-import { RadarOption } from 'echarts/types/dist/shared';
+import type {
+    RegisteredSeriesOption,
+    RadarOption
+} from 'echarts/types/dist/shared';
 
-import { EC, optionCreator } from '../charts';
+import { EC } from '../charts';
+import { optionCreator, seriesOptionCreator, chartLoader } from '../utility';
 
 export type PieSeriesProps = Omit<RegisteredSeriesOption['pie'], 'type'>;
 /**
@@ -18,15 +21,9 @@ export type PieSeriesProps = Omit<RegisteredSeriesOption['pie'], 'type'>;
  */
 export const PieSeries: EC<PieSeriesProps> = () => <></>;
 
-PieSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'pie' }]
-});
+PieSeries.optionOf = seriesOptionCreator('pie');
 
-PieSeries.loadModule = async () => {
-    const { PieChart } = await import('echarts/charts');
-
-    return [PieChart];
-};
+PieSeries.loadModule = chartLoader(['PieChart']);
 
 export const Radar: EC<RadarOption> = () => <></>;
 
@@ -46,12 +43,32 @@ export type RadarSeriesProps = Omit<RegisteredSeriesOption['radar'], 'type'>;
  */
 export const RadarSeries: EC<RadarSeriesProps> = () => <></>;
 
-RadarSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'radar' }]
-});
+RadarSeries.optionOf = seriesOptionCreator('radar');
 
-RadarSeries.loadModule = async () => {
-    const { RadarChart } = await import('echarts/charts');
+RadarSeries.loadModule = chartLoader(['RadarChart']);
 
-    return [RadarChart];
-};
+export type SunburstSeriesProps = Omit<
+    RegisteredSeriesOption['sunburst'],
+    'type'
+>;
+export const SunburstSeries: EC<SunburstSeriesProps> = () => <></>;
+
+SunburstSeries.optionOf = seriesOptionCreator('sunburst');
+
+SunburstSeries.loadModule = chartLoader(['SunburstChart']);
+
+export type GaugeSeriesProps = Omit<RegisteredSeriesOption['gauge'], 'type'>;
+/**
+ * @example
+ * ```tsx
+ * <GaugeSeries
+ *     name="Pressure"
+ *     detail={{ formatter: '{value}' }}
+ *     data={[{ value: 50, name: 'SCORE' }]}
+ * />
+ */
+export const GaugeSeries: EC<GaugeSeriesProps> = () => <></>;
+
+GaugeSeries.optionOf = seriesOptionCreator('gauge');
+
+GaugeSeries.loadModule = chartLoader(['GaugeChart']);

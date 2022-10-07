@@ -1,3 +1,4 @@
+import { groupBy } from 'web-utility';
 import {
     HTMLAttributes,
     PropsWithChildren,
@@ -8,18 +9,12 @@ import {
 } from 'react';
 import { EChartsType, use, init } from 'echarts/core';
 
-export type ECBasicOption = Parameters<EChartsType['setOption']>[0];
-
-export type ECExtensions = Parameters<typeof use>[0];
+import { ECBasicOption, ECExtensions } from './utility';
 
 export interface EC<T = {}> extends FC<T> {
     optionOf: (props: PropsWithChildren<T>) => ECBasicOption;
     loadModule?: () => Promise<ECExtensions>;
 }
-
-export const optionCreator =
-    <T,>(key: string) =>
-    ({ children, ...props }: PropsWithChildren<T>) => ({ [key]: props });
 
 type ContainerProps = Pick<
     HTMLAttributes<HTMLDivElement>,
@@ -57,10 +52,10 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
                 node =>
                     isValidElement(node) &&
                     typeof node.type === 'function' &&
-                    (node.type as EC).loadModule()
+                    (node.type as EC).loadModule?.()
             )
         );
-        use(modules.flat().filter(Boolean));
+        use(modules.flat().filter(Boolean) as ECExtensions);
 
         this.setState({ imported: true });
     }
@@ -70,24 +65,20 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
 
         const { splittedProps, props } = this;
 
-        const options = Children.toArray(props.children).map(node => {
-            if (!isValidElement<PropsWithChildren<{}>>(node)) return;
+        const options = Children.toArray(props.children)
+            .map(node => {
+                if (!isValidElement<PropsWithChildren<{}>>(node)) return [];
 
-            const { type, props } = node;
+                const { type, props } = node;
 
-            return (type as EC).optionOf(props);
+                return Object.entries((type as EC).optionOf(props));
+            })
+            .flat();
+
+        this.core?.setOption({
+            ...splittedProps.charts,
+            ...groupBy(options, ([key]) => key)
         });
-        const option = options.reduce((sum, item) => {
-            const [key, value] = Object.entries(item)[0];
-
-            if (!Array.isArray(value)) return { ...sum, ...item };
-
-            ((sum[key] ||= []) as any[]).push(...value);
-
-            return sum;
-        }, {});
-
-        this.core?.setOption({ ...splittedProps.charts, ...option });
     }
 
     render() {

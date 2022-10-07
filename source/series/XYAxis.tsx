@@ -1,7 +1,7 @@
-import { RegisteredSeriesOption } from 'echarts';
+import type { RegisteredSeriesOption } from 'echarts/types/dist/shared';
 
 import { EC } from '../charts';
-import { componentLoader } from '../components';
+import { seriesOptionCreator, componentLoader } from '../utility';
 
 export type ScatterSeriesProps = Omit<
     RegisteredSeriesOption['scatter'],
@@ -19,9 +19,7 @@ export type ScatterSeriesProps = Omit<
  */
 export const ScatterSeries: EC<ScatterSeriesProps> = () => <></>;
 
-ScatterSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'scatter' }]
-});
+ScatterSeries.optionOf = seriesOptionCreator('scatter');
 
 ScatterSeries.loadModule = async () => {
     const [{ ScatterChart }, { UniversalTransition }] = await Promise.all([
@@ -40,9 +38,7 @@ export type LineSeriesProps = Omit<RegisteredSeriesOption['line'], 'type'>;
  */
 export const LineSeries: EC<LineSeriesProps> = () => <></>;
 
-LineSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'line' }]
-});
+LineSeries.optionOf = seriesOptionCreator('line');
 
 LineSeries.loadModule = async () => {
     const [{ LineChart }, { UniversalTransition }] = await Promise.all([
@@ -61,9 +57,7 @@ export type BarSeriesProps = Omit<RegisteredSeriesOption['bar'], 'type'>;
  */
 export const BarSeries: EC<BarSeriesProps> = () => <></>;
 
-BarSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'bar' }]
-});
+BarSeries.optionOf = seriesOptionCreator('bar');
 
 BarSeries.loadModule = async () => {
     const [{ BarChart }, { UniversalTransition }, components] =
@@ -92,9 +86,7 @@ export type CandlestickSeriesProps = Omit<
  */
 export const CandlestickSeries: EC<CandlestickSeriesProps> = () => <></>;
 
-CandlestickSeries.optionOf = ({ children, ...props }) => ({
-    series: [{ ...props, type: 'candlestick' }]
-});
+CandlestickSeries.optionOf = seriesOptionCreator('candlestick');
 
 CandlestickSeries.loadModule = async () => {
     const [{ CandlestickChart }, { UniversalTransition }] = await Promise.all([

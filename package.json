@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "0.3.0",
+    "version": "0.4.0-rc.0",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript",
@@ -25,7 +25,8 @@
     "module": "dist/index.js",
     "main": "dist/index.umd.js",
     "dependencies": {
-        "echarts": "^5.4.0"
+        "echarts": "^5.4.0",
+        "web-utility": "^3.9.4"
     },
     "peerDependencies": {
         "react": ">=16.0.0"

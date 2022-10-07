@@ -15,6 +15,8 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
     -   [x] Candle Stick chart
     -   [x] Pie chart
     -   [x] Radar chart
+    -   [x] Tree chart
+    -   [x] Tree Map chart
 -   [x] Async-load required modules automatically
 
 ## Quick start
