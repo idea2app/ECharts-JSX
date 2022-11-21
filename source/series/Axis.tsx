@@ -1,11 +1,15 @@
 import type { RegisteredSeriesOption } from 'echarts/types/dist/shared';
 
 import { EC } from '../charts';
-import { seriesOptionCreator, chartLoader, componentLoader } from '../utility';
+import {
+    SeriesProps,
+    seriesOptionCreator,
+    chartLoader,
+    componentLoader
+} from '../utility';
 
-export type ParallelSeriesProps = Omit<
-    RegisteredSeriesOption['parallel'],
-    'type'
+export type ParallelSeriesProps = SeriesProps<
+    RegisteredSeriesOption['parallel']
 >;
 /**
  * @example
@@ -23,10 +27,7 @@ ParallelSeries.optionOf = seriesOptionCreator('parallel');
 
 ParallelSeries.loadModule = chartLoader(['ParallelChart']);
 
-export type ScatterSeriesProps = Omit<
-    RegisteredSeriesOption['scatter'],
-    'type'
->;
+export type ScatterSeriesProps = SeriesProps<RegisteredSeriesOption['scatter']>;
 /**
  * @example
  * ```tsx
@@ -49,7 +50,7 @@ ScatterSeries.loadModule = async () => {
     return [ScatterChart, UniversalTransition];
 };
 
-export type LineSeriesProps = Omit<RegisteredSeriesOption['line'], 'type'>;
+export type LineSeriesProps = SeriesProps<RegisteredSeriesOption['line']>;
 /**
  * @example
  * ```tsx
@@ -68,7 +69,7 @@ LineSeries.loadModule = async () => {
     return [LineChart, UniversalTransition];
 };
 
-export type BarSeriesProps = Omit<RegisteredSeriesOption['bar'], 'type'>;
+export type BarSeriesProps = SeriesProps<RegisteredSeriesOption['bar']>;
 /**
  * @example
  * ```tsx
@@ -89,9 +90,8 @@ BarSeries.loadModule = async () => {
     return [BarChart, UniversalTransition, ...(components as any[])];
 };
 
-export type CandlestickSeriesProps = Omit<
-    RegisteredSeriesOption['candlestick'],
-    'type'
+export type CandlestickSeriesProps = SeriesProps<
+    RegisteredSeriesOption['candlestick']
 >;
 /**
  * @example

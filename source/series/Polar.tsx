@@ -4,9 +4,15 @@ import type {
 } from 'echarts/types/dist/shared';
 
 import { EC } from '../charts';
-import { optionCreator, seriesOptionCreator, chartLoader } from '../utility';
+import {
+    EventHandlerProps,
+    SeriesProps,
+    optionCreator,
+    seriesOptionCreator,
+    chartLoader
+} from '../utility';
 
-export type PieSeriesProps = Omit<RegisteredSeriesOption['pie'], 'type'>;
+export type PieSeriesProps = SeriesProps<RegisteredSeriesOption['pie']>;
 /**
  * @example
  * ```tsx
@@ -25,11 +31,13 @@ PieSeries.optionOf = seriesOptionCreator('pie');
 
 PieSeries.loadModule = chartLoader(['PieChart']);
 
-export const Radar: EC<RadarOption> = () => <></>;
+export type RadarProps = EventHandlerProps & RadarOption;
+
+export const Radar: EC<RadarProps> = () => <></>;
 
 Radar.optionOf = optionCreator('radar');
 
-export type RadarSeriesProps = Omit<RegisteredSeriesOption['radar'], 'type'>;
+export type RadarSeriesProps = SeriesProps<RegisteredSeriesOption['radar']>;
 /**
  * @example
  * ```tsx
@@ -47,9 +55,8 @@ RadarSeries.optionOf = seriesOptionCreator('radar');
 
 RadarSeries.loadModule = chartLoader(['RadarChart']);
 
-export type SunburstSeriesProps = Omit<
-    RegisteredSeriesOption['sunburst'],
-    'type'
+export type SunburstSeriesProps = SeriesProps<
+    RegisteredSeriesOption['sunburst']
 >;
 export const SunburstSeries: EC<SunburstSeriesProps> = () => <></>;
 
@@ -57,7 +64,7 @@ SunburstSeries.optionOf = seriesOptionCreator('sunburst');
 
 SunburstSeries.loadModule = chartLoader(['SunburstChart']);
 
-export type GaugeSeriesProps = Omit<RegisteredSeriesOption['gauge'], 'type'>;
+export type GaugeSeriesProps = SeriesProps<RegisteredSeriesOption['gauge']>;
 /**
  * @example
  * ```tsx

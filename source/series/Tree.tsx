@@ -5,9 +5,9 @@ import {
 } from 'echarts/types/dist/shared';
 
 import { EC } from '../charts';
-import { seriesOptionCreator, chartLoader } from '../utility';
+import { SeriesProps, seriesOptionCreator, chartLoader } from '../utility';
 
-export type TreeSeriesProps = Omit<TreeSeriesOption, 'type'>;
+export type TreeSeriesProps = SeriesProps<TreeSeriesOption>;
 
 export const TreeSeries: EC<TreeSeriesProps> = () => <></>;
 
@@ -15,7 +15,7 @@ TreeSeries.optionOf = seriesOptionCreator('tree');
 
 TreeSeries.loadModule = chartLoader(['TreeChart']);
 
-export type TreeMapSeriesProps = Omit<TreemapSeriesOption, 'type'>;
+export type TreeMapSeriesProps = SeriesProps<TreemapSeriesOption>;
 
 export const TreeMapSeries: EC<TreeMapSeriesProps> = () => <></>;
 
@@ -23,7 +23,7 @@ TreeMapSeries.optionOf = seriesOptionCreator('treemap');
 
 TreeMapSeries.loadModule = chartLoader(['TreemapChart']);
 
-export type SankeySeriesProps = Omit<SankeySeriesOption, 'type'>;
+export type SankeySeriesProps = SeriesProps<SankeySeriesOption>;
 
 export const SankeySeries: EC<SankeySeriesProps> = () => <></>;
 

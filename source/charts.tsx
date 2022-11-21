@@ -8,9 +8,14 @@ import {
     PureComponent,
     isValidElement
 } from 'react';
-import { EChartsType, use, init } from 'echarts/core';
+import { ElementEvent, EChartsType, use, init } from 'echarts/core';
 
-import { ECBasicOption, ECExtensions } from './utility';
+import {
+    ECBasicOption,
+    ECExtensions,
+    EventHandler,
+    EventHandlerProps
+} from './utility';
 
 export interface EC<T = {}> extends FC<T> {
     optionOf: (props: PropsWithChildren<T>) => ECBasicOption;
@@ -32,6 +37,9 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
 
     core?: EChartsType;
 
+    protected eventMap: Partial<Record<ElementEvent['type'], EventHandler[]>> =
+        {};
+
     get splittedProps(): {
         container: PropsWithChildren<ContainerProps>;
         charts: ECBasicOption;
@@ -51,7 +59,7 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
         })
     );
 
-    boot = (root: HTMLElement | null) => {
+    protected boot = (root: HTMLElement | null) => {
         if (!root || this.core) return;
 
         this.core = init(root);
@@ -82,8 +90,59 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
         this.setState({ imported: true });
     }
 
+    protected clearEvents() {
+        for (const event in this.eventMap) this.core?.off(event);
+
+        this.eventMap = {};
+    }
+
+    protected dispatchEvents =
+        (handlers: EventHandler[]): EventHandler =>
+        data => {
+            for (const handler of handlers) handler(data);
+        };
+
+    protected registerEvents() {
+        for (const event in this.eventMap) {
+            const name = event as ElementEvent['type'];
+
+            this.core?.on<ECharts, ElementEvent['type']>(
+                name,
+                this.dispatchEvents(this.eventMap[name]!)
+            );
+        }
+    }
+
+    protected pickHandlers(
+        type: string,
+        index: number,
+        props: PropsWithChildren<EventHandlerProps>
+    ) {
+        const propsMap: ECBasicOption = {};
+
+        for (const [key, value] of Object.entries(props)) {
+            const [_, event] = key.match(/^on([A-Z]\w+)/) || [];
+
+            if (!event || typeof value !== 'function') {
+                propsMap[key] = value;
+                continue;
+            }
+            const name = event.toLowerCase() as ElementEvent['type'];
+
+            (this.eventMap[name] ||= []).push(function (this: any, ...data) {
+                const [{ componentType, componentIndex }] = data;
+
+                if (type === componentType && index === componentIndex)
+                    (value as EventHandler).apply(this, data);
+            });
+        }
+        return propsMap;
+    }
+
     componentDidUpdate() {
         if (!this.state.imported) return;
+
+        this.clearEvents();
 
         const { splittedProps, props } = this;
 
@@ -95,16 +154,20 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
 
                 return Object.entries((type as EC).optionOf(props));
             })
-            .flat() as [string, ECBasicOption][];
+            .flat() as [string, ECBasicOption & EventHandlerProps][];
 
         const optionGroup = groupBy(options, ([key]) => key);
 
         const option = Object.fromEntries(
             Object.entries(optionGroup).map(([key, list]) => [
                 key,
-                list.map(([{}, option]) => option)
+                list.map(([{}, props], index) =>
+                    this.pickHandlers(key, index, props)
+                )
             ])
         );
+        this.registerEvents();
+
         this.core?.setOption({ ...splittedProps.charts, ...option });
     }
 

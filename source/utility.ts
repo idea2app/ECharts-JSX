@@ -1,11 +1,25 @@
+import { CamelEventName } from 'web-utility';
 import { PropsWithChildren } from 'react';
 import {
+    ElementEvent,
+    CallbackDataParams,
     RegisteredSeriesOption,
     SeriesOption
 } from 'echarts/types/dist/shared';
 import { EChartsType, use } from 'echarts/core';
 import * as charts from 'echarts/charts';
 import * as components from 'echarts/components';
+
+export type EventHandlerKey = `on${Capitalize<
+    CamelEventName<ElementEvent['type']>
+>}`;
+
+export type EventHandler = (data: CallbackDataParams) => any;
+
+export type EventHandlerProps = Partial<Record<EventHandlerKey, EventHandler>>;
+
+export type SeriesProps<T extends SeriesOption> = EventHandlerProps &
+    Omit<T, 'type'>;
 
 export type ECBasicOption = Parameters<EChartsType['setOption']>[0];
 
