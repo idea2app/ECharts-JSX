@@ -1,4 +1,5 @@
 import { groupBy } from 'web-utility';
+import { debounce } from 'lodash';
 import {
     HTMLAttributes,
     PropsWithChildren,
@@ -42,6 +43,27 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
             container: { className, style, hidden, tabIndex, children },
             charts
         };
+    }
+
+    resize = debounce(() =>
+        this.core!.resize({
+            animation: { easing: 'linear', duration: 250 }
+        })
+    );
+
+    boot = (root: HTMLElement | null) => {
+        if (!root || this.core) return;
+
+        this.core = init(root);
+
+        globalThis.addEventListener?.('resize', this.resize);
+    };
+
+    componentWillUnmount() {
+        this.core?.dispose();
+        this.core = undefined;
+
+        globalThis.removeEventListener?.('resize', this.resize);
     }
 
     async componentDidMount() {
@@ -92,7 +114,7 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
         return state.imported ? (
             <div
                 {...splittedProps.container}
-                ref={root => root && (this.core = init(root))}
+                ref={this.boot}
                 style={{
                     width: '100%',
                     minHeight: '50vh',

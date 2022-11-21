@@ -26,20 +26,22 @@
     "main": "dist/index.umd.js",
     "dependencies": {
         "echarts": "^5.4.0",
-        "web-utility": "^3.9.4"
+        "lodash": "^4.17.21",
+        "web-utility": "^3.9.9"
     },
     "peerDependencies": {
         "react": ">=16.0.0"
     },
     "devDependencies": {
-        "@types/react": "^17.0.50",
-        "husky": "^8.0.1",
+        "@types/lodash": "^4.14.189",
+        "@types/react": "^17.0.52",
+        "husky": "^8.0.2",
         "lint-staged": "^13.0.3",
         "microbundle": "^0.15.1",
         "open-cli": "^7.1.0",
         "prettier": "^2.7.1",
         "react": "^17.0.2",
-        "typedoc": "^0.23.15",
+        "typedoc": "^0.23.21",
         "typedoc-plugin-mdn-links": "^2.0.0",
         "typescript": "~4.8.4"
     },
