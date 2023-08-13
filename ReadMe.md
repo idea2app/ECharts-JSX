@@ -2,13 +2,15 @@
 
 A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
 
-[![CI & CD](https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml/badge.svg)][4]
+[![NPM Dependency](https://img.shields.io/librariesio/github/idea2app/ECharts-JSX.svg)][4]
+[![CI & CD](https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml/badge.svg)][5]
+[![](https://raw.githubusercontent.com/sindresorhus/awesome/main/media/mentioned-badge.svg)][6]
 
-[![NPM](https://nodei.co/npm/echarts-jsx.png?downloads=true&downloadRank=true&stars=true)][5]
+[![NPM](https://nodei.co/npm/echarts-jsx.png?downloads=true&downloadRank=true&stars=true)][7]
 
 ## Features
 
--   [x] All kinds of options can be write in **JSX syntax**
+-   [x] All kinds of options & event handlers can be write in **JSX syntax**
     -   [x] Parallel chart
     -   [x] Line chart
     -   [x] Scatter chart
@@ -37,9 +39,9 @@ npm i echarts-jsx react react-dom
 
 ### Simple example
 
-Origin: [ECharts official example][6]
+Origin: [ECharts official example][8]
 
-[![Edit ECharts-JSX-demo](https://codesandbox.io/static/img/play-codesandbox.svg)][7]
+[![Edit ECharts-JSX-demo](https://codesandbox.io/static/img/play-codesandbox.svg)][9]
 
 ```tsx
 import { render } from 'react-dom';
@@ -73,7 +75,11 @@ render(
         />
         <YAxis />
 
-        <BarSeries name="sales" data={[5, 20, 36, 10, 10, 20]} />
+        <BarSeries
+            name="sales"
+            data={[5, 20, 36, 10, 10, 20]}
+            onClick={console.log}
+        />
     </CanvasCharts>,
     document.body
 );
@@ -88,12 +94,14 @@ render(
 
 ## User cases
 
-1. [China Open-source Map](https://test.kaiyuanshe.cn/organization/)
+1. [China Open-source Map](https://kaiyuanshe.cn/organization/)
 
 [1]: https://facebook.github.io/jsx/
 [2]: https://echarts.apache.org/
 [3]: https://www.typescriptlang.org/
-[4]: https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml
-[5]: https://nodei.co/npm/echarts-jsx/
-[6]: https://echarts.apache.org/handbook/en/get-started/
-[7]: https://codesandbox.io/s/echarts-jsx-demo-bouwsf?autoresize=1&fontsize=14&module=%2Fsrc%2FBar.tsx&theme=dark
+[4]: https://libraries.io/npm/echarts-jsx
+[5]: https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml
+[6]: https://github.com/ecomfe/awesome-echarts
+[7]: https://nodei.co/npm/echarts-jsx/
+[8]: https://echarts.apache.org/handbook/en/get-started/
+[9]: https://codesandbox.io/s/echarts-jsx-demo-bouwsf?autoresize=1&fontsize=14&module=%2Fsrc%2FBar.tsx&theme=dark
