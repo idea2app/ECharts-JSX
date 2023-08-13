@@ -153,23 +153,6 @@ YAxis.optionOf = optionCreator('yAxis');
 
 YAxis.loadModule = componentLoader(['GridComponent']);
 
-export type CalendarProps = EventHandlerProps & CalendarComponentOption;
-/**
- * @example
- * ```tsx
- * <Calendar
- *     cellSize={['auto', 13]}
- *     range="2016"
- *     yearLabel={{ show: false }}
- *  />
- */
-export const Calendar: EC<CalendarProps> = () => <></>;
-
-Calendar.optionOf = optionCreator('calendar');
-
-Calendar.loadModule = componentLoader(['CalendarComponent']);
-
-
 export type AxisPointerProps = EventHandlerProps & AxisPointerComponentOption;
 /**
  * @example
@@ -182,3 +165,20 @@ export const AxisPointer: EC<AxisPointerProps> = () => <></>;
 AxisPointer.optionOf = optionCreator('axisPointer');
 
 AxisPointer.loadModule = componentLoader(['AxisPointerComponent']);
+
+export type CalendarProps = EventHandlerProps & CalendarComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Calendar
+ *     cellSize={['auto', 13]}
+ *     range="2016"
+ *     yearLabel={{ show: false }}
+ * />
+ * ```
+ */
+export const Calendar: EC<CalendarProps> = () => <></>;
+
+Calendar.optionOf = optionCreator('calendar');
+
+Calendar.loadModule = componentLoader(['CalendarComponent']);

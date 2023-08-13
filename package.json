@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "0.5.0",
+    "version": "0.5.2",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript",
@@ -12,7 +12,7 @@
         "chart",
         "typescript"
     ],
-    "homepage": "https://ideapp.dev/ECharts-JSX/",
+    "homepage": "https://idea2app.github.io/ECharts-JSX/",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/idea2app/ECharts-JSX.git"
@@ -25,25 +25,25 @@
     "module": "dist/index.js",
     "main": "dist/index.umd.js",
     "dependencies": {
-        "echarts": "^5.4.0",
+        "echarts": "^5.4.3",
         "lodash": "^4.17.21",
-        "web-utility": "^3.9.9"
+        "web-utility": "^4.1.0"
     },
     "peerDependencies": {
-        "react": ">=16.0.0"
+        "react": ">=16"
     },
     "devDependencies": {
-        "@types/lodash": "^4.14.189",
-        "@types/react": "^17.0.52",
-        "husky": "^8.0.2",
-        "lint-staged": "^13.0.3",
+        "@types/lodash": "^4.14.197",
+        "@types/react": "^17.0.64",
+        "husky": "^8.0.3",
+        "lint-staged": "^13.3.0",
         "microbundle": "^0.15.1",
-        "open-cli": "^7.1.0",
-        "prettier": "^2.7.1",
+        "open-cli": "^7.2.0",
+        "prettier": "^3.0.1",
         "react": "^17.0.2",
-        "typedoc": "^0.23.21",
-        "typedoc-plugin-mdn-links": "^2.0.0",
-        "typescript": "~4.8.4"
+        "typedoc": "^0.24.8",
+        "typedoc-plugin-mdn-links": "^3.0.3",
+        "typescript": "~5.1.6"
     },
     "prettier": {
         "singleQuote": true,
