@@ -1,15 +1,16 @@
 import type {
+    AxisPointerComponentOption,
+    CalendarComponentOption,
+    GridComponentOption,
+    LegendComponentOption,
+    ParallelComponentOption,
+    SingleAxisComponentOption,
     TitleComponentOption,
     ToolboxComponentOption,
-    LegendComponentOption,
-    VisualMapComponentOption,
     TooltipComponentOption,
-    GridComponentOption,
-    SingleAxisComponentOption,
-    ParallelComponentOption,
+    VisualMapComponentOption,
     XAXisComponentOption,
-    YAXisComponentOption,
-    CalendarComponentOption
+    YAXisComponentOption
 } from 'echarts';
 
 import { EC } from './charts';
@@ -167,3 +168,17 @@ export const Calendar: EC<CalendarProps> = () => <></>;
 Calendar.optionOf = optionCreator('calendar');
 
 Calendar.loadModule = componentLoader(['CalendarComponent']);
+
+
+export type AxisPointerProps = EventHandlerProps & AxisPointerComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <AxisPointer link={[{ xAxisIndex: 'all' }]} />
+ * ```
+ */
+export const AxisPointer: EC<AxisPointerProps> = () => <></>;
+
+AxisPointer.optionOf = optionCreator('axisPointer');
+
+AxisPointer.loadModule = componentLoader(['AxisPointerComponent']);
