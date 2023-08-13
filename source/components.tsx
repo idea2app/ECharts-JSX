@@ -175,6 +175,7 @@ export type AxisPointerProps = EventHandlerProps & AxisPointerComponentOption;
  * @example
  * ```tsx
  * <AxisPointer link={[{ xAxisIndex: 'all' }]} />
+ * ```
  */
 export const AxisPointer: EC<AxisPointerProps> = () => <></>;
 
