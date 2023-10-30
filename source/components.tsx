@@ -12,11 +12,14 @@ import type {
     XAXisComponentOption,
     YAXisComponentOption
 } from 'echarts';
+import { PropsWithChildren } from 'react';
 
 import { EC } from './charts';
-import { EventHandlerProps, optionCreator, componentLoader } from './utility';
+import { EventHandlerProps, componentLoader, optionCreator } from './utility';
 
-export type TitleProps = EventHandlerProps & Omit<TitleComponentOption, 'text'>;
+export type TitleProps = PropsWithChildren<
+    EventHandlerProps & Omit<TitleComponentOption, 'text'>
+>;
 /**
  * @example
  * ```tsx

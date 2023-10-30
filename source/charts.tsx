@@ -22,9 +22,11 @@ export interface EC<T = {}> extends FC<T> {
     loadModule?: () => Promise<ECExtensions>;
 }
 
-type ContainerProps = Pick<
-    HTMLAttributes<HTMLDivElement>,
-    'className' | 'style' | 'hidden' | 'tabIndex'
+type ContainerProps = PropsWithChildren<
+    Pick<
+        HTMLAttributes<HTMLDivElement>,
+        'className' | 'style' | 'hidden' | 'tabIndex'
+    >
 >;
 export type EChartsProps = ECBasicOption & ContainerProps;
 
