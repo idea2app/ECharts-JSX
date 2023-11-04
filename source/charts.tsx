@@ -28,7 +28,10 @@ type ContainerProps = PropsWithChildren<
         'className' | 'style' | 'hidden' | 'tabIndex'
     >
 >;
-export type EChartsProps = ECBasicOption & ContainerProps;
+export interface EChartsProps extends ECBasicOption, ContainerProps {
+    theme?: string | object;
+    initialOptions?: Parameters<typeof init>[2];
+}
 
 interface State {
     imported?: boolean;
@@ -42,12 +45,17 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
     protected eventMap: Partial<Record<ElementEvent['type'], EventHandler[]>> =
         {};
 
-    get splittedProps(): {
-        container: PropsWithChildren<ContainerProps>;
-        charts: ECBasicOption;
-    } {
-        const { className, style, hidden, tabIndex, children, ...charts } =
-            this.props;
+    get splittedProps(): { container: ContainerProps; charts: ECBasicOption } {
+        const {
+            className,
+            style,
+            hidden,
+            tabIndex,
+            children,
+            theme,
+            initialOptions,
+            ...charts
+        } = this.props;
 
         return {
             container: { className, style, hidden, tabIndex, children },
@@ -64,7 +72,9 @@ export abstract class ECharts extends PureComponent<EChartsProps, State> {
     protected boot = (root: HTMLElement | null) => {
         if (!root || this.core) return;
 
-        this.core = init(root);
+        const { theme, initialOptions } = this.props;
+
+        this.core = init(root, theme, initialOptions);
 
         globalThis.addEventListener?.('resize', this.resize);
     };
