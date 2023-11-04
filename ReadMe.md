@@ -56,7 +56,7 @@ import {
 } from 'echarts-jsx';
 
 render(
-    <CanvasCharts>
+    <CanvasCharts theme="dark">
         <Title>ECharts Getting Started Example</Title>
 
         <Legend data={['sales']} />

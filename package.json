@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript",
@@ -34,7 +34,7 @@
     },
     "devDependencies": {
         "@types/lodash": "^4.14.200",
-        "@types/react": "^18.2.33",
+        "@types/react": "^18.2.34",
         "husky": "^8.0.3",
         "lint-staged": "^15.0.2",
         "microbundle": "^0.15.1",
@@ -58,7 +58,7 @@
     "scripts": {
         "prepare": "husky install",
         "test": "lint-staged",
-        "pack-dist": "rm -rf dist/  &&  microbundle",
+        "pack-dist": "rm -rf dist/  &&  microbundle --name EChartsJSX --jsx jsx --jsxImportSource react --globals react/jsx-runtime=jsx,echarts/core=echarts,web-utility=WebUtility",
         "pack-docs": "rm -rf docs/  &&  typedoc source/",
         "build": "npm run pack-dist  &&  npm run pack-docs",
         "start": "npm run pack-docs  &&  open-cli docs/index.html",
