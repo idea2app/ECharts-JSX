@@ -1,49 +1,94 @@
-import { CamelEventName } from 'web-utility';
-import { PropsWithChildren } from 'react';
-import {
-    ElementEvent,
-    CallbackDataParams,
-    RegisteredSeriesOption,
-    SeriesOption
-} from 'echarts/types/dist/shared';
-import { EChartsType, use } from 'echarts/core';
-import * as charts from 'echarts/charts';
-import * as components from 'echarts/components';
+import { ECElementEvent, use } from 'echarts/core';
+import { memoize } from 'lodash';
 
-export type EventHandlerKey = `on${Capitalize<
-    CamelEventName<ElementEvent['type']>
->}`;
+export const EventKeyPattern = /^on(\w+)/;
 
-export type EventHandler = (data: CallbackDataParams) => any;
+export type ZRElementEventName = ECElementEvent['type'];
+export type ZRElementEventHandler = (event: ECElementEvent) => boolean | void;
 
-export type EventHandlerProps = Partial<Record<EventHandlerKey, EventHandler>>;
+/**
+ * @see {@link https://github.com/apache/echarts/blob/031a908fafaa57e2277b2f720087195925ec38cf/src/model/Global.ts#L83-L111}
+ */
+export const BUITIN_COMPONENTS_MAP = {
+    grid: 'GridComponent',
+    polar: 'PolarComponent',
+    geo: 'GeoComponent',
+    singleAxis: 'SingleAxisComponent',
+    parallel: 'ParallelComponent',
+    calendar: 'CalendarComponent',
+    graphic: 'GraphicComponent',
+    toolbox: 'ToolboxComponent',
+    tooltip: 'TooltipComponent',
+    axisPointer: 'AxisPointerComponent',
+    brush: 'BrushComponent',
+    title: 'TitleComponent',
+    timeline: 'TimelineComponent',
+    markPoint: 'MarkPointComponent',
+    markLine: 'MarkLineComponent',
+    markArea: 'MarkAreaComponent',
+    legend: 'LegendComponent',
+    dataZoom: 'DataZoomComponent',
+    visualMap: 'VisualMapComponent',
+    // aria: 'AriaComponent',
+    // dataset: 'DatasetComponent',
 
-export type SeriesProps<T extends SeriesOption> = EventHandlerProps &
-    Omit<T, 'type'>;
+    // Dependencies
+    xAxis: 'GridComponent',
+    yAxis: 'GridComponent',
+    angleAxis: 'PolarComponent',
+    radiusAxis: 'PolarComponent'
+} as const;
 
-export type ECBasicOption = Parameters<EChartsType['setOption']>[0];
+export type ECComponentOptionName = keyof typeof BUITIN_COMPONENTS_MAP;
 
-export type ECExtensions = Parameters<typeof use>[0];
+export const loadComponent = memoize(async (name: ECComponentOptionName) => {
+    const componentName = BUITIN_COMPONENTS_MAP[name];
+    const { [componentName]: component } = await import('echarts/components');
 
-export const optionCreator =
-    <T>(key: string) =>
-    ({ children, ...props }: PropsWithChildren<T>) => ({ [key]: props });
+    use(component);
+});
 
-export const seriesOptionCreator =
-    <T extends SeriesOption>(type: keyof RegisteredSeriesOption) =>
-    ({ children, ...props }: PropsWithChildren<T>) => ({
-        series: { ...props, type }
-    });
+/**
+ * @see {@link https://github.com/apache/echarts/blob/031a908fafaa57e2277b2f720087195925ec38cf/src/model/Global.ts#L113-L136}
+ */
+export const BUILTIN_CHARTS_MAP = {
+    line: 'LineChart',
+    bar: 'BarChart',
+    pie: 'PieChart',
+    scatter: 'ScatterChart',
+    radar: 'RadarChart',
+    map: 'MapChart',
+    tree: 'TreeChart',
+    treemap: 'TreemapChart',
+    graph: 'GraphChart',
+    gauge: 'GaugeChart',
+    funnel: 'FunnelChart',
+    parallel: 'ParallelChart',
+    sankey: 'SankeyChart',
+    boxplot: 'BoxplotChart',
+    candlestick: 'CandlestickChart',
+    effectScatter: 'EffectScatterChart',
+    lines: 'LinesChart',
+    heatmap: 'HeatmapChart',
+    pictorialBar: 'PictorialBarChart',
+    themeRiver: 'ThemeRiverChart',
+    sunburst: 'SunburstChart',
+    custom: 'CustomChart'
+} as const;
 
-export const chartLoader = (names: (keyof typeof charts)[]) => async () => {
-    const module = await import('echarts/charts');
+export type ECChartOptionName = keyof typeof BUILTIN_CHARTS_MAP;
 
-    return names.map(name => module[name]);
-};
+export const loadChart = memoize(async (name: ECChartOptionName) => {
+    const chartName = BUILTIN_CHARTS_MAP[name];
+    const { [chartName]: chart } = await import('echarts/charts');
 
-export const componentLoader =
-    (names: (keyof typeof components)[]) => async (): Promise<ECExtensions> => {
-        const module = await import('echarts/components');
+    use(chart);
+});
 
-        return names.map(name => module[name]);
-    };
+export type ChartType = 'svg' | 'canvas';
+
+export const loadRenderer = memoize(async (type: ChartType) => {
+    const { SVGRenderer, CanvasRenderer } = await import('echarts/renderers');
+
+    use(type === 'svg' ? SVGRenderer : CanvasRenderer);
+});
