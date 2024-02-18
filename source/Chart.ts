@@ -3,8 +3,8 @@ import { EChartsOption, ResizeOpts } from 'echarts';
 import { ECharts, init } from 'echarts/core';
 import { ECBasicOption } from 'echarts/types/dist/shared';
 import { Observable } from 'iterable-observer';
-import { debounce } from 'lodash';
-import { CustomElement, parseDOM, sleep } from 'web-utility';
+import { debounce, merge } from 'lodash';
+import { CustomElement, parseDOM } from 'web-utility';
 
 import { ProxyElement } from './Proxy';
 import {
@@ -19,6 +19,7 @@ import {
     loadComponent,
     loadRenderer
 } from './utility';
+import { ECOptionElement } from './Option';
 
 export type EChartsElementEventHandler = Partial<
     Record<`on${Capitalize<ZRElementEventName>}`, ZRElementEventHandler>
@@ -32,10 +33,6 @@ export interface EChartsElementProps
 }
 
 export type EChartsElementState = EChartsElementProps & EChartsOption;
-
-const DefaultOptions: EChartsOption = {
-    grid: {}
-};
 
 export class EChartsElement
     extends ProxyElement<EChartsElementState>
@@ -66,10 +63,12 @@ export class EChartsElement
         this.attachShadow({ mode: 'open' }).append(
             parseDOM('<div style="height: 100%" />')[0]
         );
-        this.#boot();
+        // this.#boot();
     }
 
     connectedCallback() {
+        this.style.display = 'block';
+
         this.type ||= 'svg';
 
         globalThis.addEventListener?.('resize', this.handleResize);
@@ -84,13 +83,24 @@ export class EChartsElement
     async #init(type: ChartType) {
         await loadRenderer(type);
 
-        const { theme, initOptions, ...props } = this.toJSON();
+        var { theme, initOptions, ...props } = this.toJSON();
 
         this.#core = init(
             this.shadowRoot.firstElementChild as HTMLDivElement,
             theme,
             initOptions
         );
+        props = merge.apply(
+            null,
+            Array.from(this.children, (item: ECOptionElement) => ({
+                [item.chartTagName]:
+                    item.chartTagName === 'series'
+                        ? [item.toJSON()]
+                        : item.toJSON()
+            }))
+        );
+        console.log(props);
+
         this.setOption(props);
 
         for (const [event, handler, selector] of this.#eventHandlers)
@@ -109,8 +119,13 @@ export class EChartsElement
             this,
             'optionchange'
         )) {
+            const nextTick = new Promise<void>(resolve => {
+                if (this.#core) this.#core.on('finished', resolve);
+                else resolve();
+            });
             this.setOption(detail);
-            await sleep(0.5);
+
+            await nextTick;
         }
     }
 
@@ -126,7 +141,7 @@ export class EChartsElement
             else if (key in BUILTIN_CHARTS_MAP)
                 await loadChart(key as ECChartOptionName);
 
-        this.#core.setOption({ ...DefaultOptions, ...data }, false, true);
+        this.#core.setOption(data, false, true);
     }
 
     setProperty(key: string, value: any) {

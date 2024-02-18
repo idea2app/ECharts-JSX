@@ -28,7 +28,7 @@
     "main": "dist/index.umd.js",
     "dependencies": {
         "dom-renderer": "^2.1.4",
-        "echarts": "^5.4.3",
+        "echarts": ">=5",
         "iterable-observer": "^1.0.1",
         "lodash": "^4.17.21",
         "web-utility": "^4.3.0"
@@ -38,13 +38,14 @@
     },
     "devDependencies": {
         "@types/lodash": "^4.14.202",
-        "@types/react": "^18.2.56",
+        "buffer": "^6.0.3",
         "husky": "^9.0.11",
         "lint-staged": "^15.2.2",
         "microbundle": "^0.15.1",
         "open-cli": "^8.0.0",
+        "parcel": "~2.11.0",
         "prettier": "^3.2.5",
-        "react": "^18.2.0",
+        "rimraf": "^5.0.5",
         "typedoc": "^0.25.8",
         "typedoc-plugin-mdn-links": "^3.1.16",
         "typescript": "~5.3.3"
@@ -62,9 +63,12 @@
     "scripts": {
         "prepare": "husky",
         "test": "lint-staged",
+        "clean": "rimraf .parcel-cache/ dist/ docs/",
+        "preview": "npm run clean  &&  cd preview/  &&  parcel --dist-dir=../docs/preview/ --open",
+        "pack-preview": "rimraf .parcel-cache/ docs/preview/  &&  cd preview/  &&  parcel build --public-url=. --dist-dir=../docs/preview/",
         "pack-dist": "rm -rf dist/  &&  microbundle --name EChartsJSX --globals lodash=_,echarts/core=echarts,web-utility=WebUtility",
         "pack-docs": "rm -rf docs/  &&  typedoc source/",
-        "build": "npm run pack-dist  &&  npm run pack-docs",
+        "build": "npm run pack-dist  &&  npm run pack-docs  &&  npm run pack-preview",
         "start": "npm run pack-docs  &&  open-cli docs/index.html",
         "prepublishOnly": "npm test  &&  npm run build"
     }

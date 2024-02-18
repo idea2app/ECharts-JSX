@@ -7,7 +7,11 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
     #data = {} as T;
 
     toJSON() {
-        return this.#data;
+        return Object.fromEntries(
+            Object.entries(this.#data).filter(
+                ([key]) => !key.startsWith('__react')
+            )
+        );
     }
 
     constructor() {

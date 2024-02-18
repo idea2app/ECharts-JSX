@@ -1,10 +1,14 @@
-name: CI & CD
+name: Commit preview
 on:
     push:
-        tags:
-            - v*
+        branches-ignore:
+            - main
 jobs:
-    Build-and-Publish:
+    Build-and-Deploy:
+        env:
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
@@ -15,28 +19,17 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   node-version: 18
-                  registry-url: https://registry.npmjs.org
                   cache: pnpm
-            - name: Install Dependencies
-              run: pnpm i --frozen-lockfile
-
-            - name: Build & Publish
-              run: npm publish
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-            - name: Update document
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  publish_dir: ./docs
-                  personal_token: ${{ secrets.GITHUB_TOKEN }}
-                  force_orphan: true
+            - name: Install & Build
+              run: |
+                  pnpm i --frozen-lockfile
+                  pnpm build
 
             - uses: amondnet/vercel-action@v25
+              if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
               with:
                   vercel-token: ${{ secrets.VERCEL_TOKEN }}
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
                   vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
                   working-directory: ./docs
-                  vercel-args: --prod
