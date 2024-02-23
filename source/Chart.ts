@@ -1,17 +1,17 @@
 import { JsxProps } from 'dom-renderer';
-import { EChartsOption, ResizeOpts } from 'echarts';
+import { EChartsOption, ResizeOpts, SeriesOption } from 'echarts';
 import { ECharts, init } from 'echarts/core';
 import { ECBasicOption } from 'echarts/types/dist/shared';
 import { Observable } from 'iterable-observer';
 import { debounce, merge } from 'lodash';
-import { CustomElement, parseDOM } from 'web-utility';
+import { CustomElement, makeArray, parseDOM } from 'web-utility';
 
+import { ECOptionElement } from './Option';
 import { ProxyElement } from './Proxy';
 import {
     BUILTIN_CHARTS_MAP,
     BUITIN_COMPONENTS_MAP,
     ChartType,
-    ECChartOptionName,
     ECComponentOptionName,
     ZRElementEventHandler,
     ZRElementEventName,
@@ -19,7 +19,6 @@ import {
     loadComponent,
     loadRenderer
 } from './utility';
-import { ECOptionElement } from './Option';
 
 export type EChartsElementEventHandler = Partial<
     Record<`on${Capitalize<ZRElementEventName>}`, ZRElementEventHandler>
@@ -135,11 +134,12 @@ export class EChartsElement
             return;
         }
 
-        for (const key of Object.keys(data))
+        for (const [key, value] of Object.entries(data))
             if (key in BUITIN_COMPONENTS_MAP)
                 await loadComponent(key as ECComponentOptionName);
-            else if (key in BUILTIN_CHARTS_MAP)
-                await loadChart(key as ECChartOptionName);
+            else if (key === 'series')
+                for (const { type } of makeArray(value) as SeriesOption[])
+                    if (type in BUILTIN_CHARTS_MAP) await loadChart(type);
 
         this.#core.setOption(data, false, true);
     }
