@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "1.0.0-rc.2",
+    "version": "1.0.0-rc.3",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript & Web components",
@@ -34,7 +34,9 @@
         },
         "./*": [
             "./dist/component/*",
-            "./dist/component/*.d.ts"
+            "./dist/component/*.d.ts",
+            "./dist/chart/*",
+            "./dist/chart/*.d.ts"
         ]
     },
     "engines": {
