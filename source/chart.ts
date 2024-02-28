@@ -1,22 +1,16 @@
 import { JsxProps } from 'dom-renderer';
-import { EChartsOption, ResizeOpts, SeriesOption } from 'echarts';
+import { EChartsOption, ResizeOpts } from 'echarts';
 import { ECharts, init } from 'echarts/core';
 import { ECBasicOption } from 'echarts/types/dist/shared';
 import { Observable } from 'iterable-observer';
-import { debounce, merge } from 'lodash';
-import { CustomElement, makeArray, parseDOM } from 'web-utility';
+import { debounce } from 'lodash';
+import { CustomElement, parseDOM } from 'web-utility';
 
-import { ECOptionElement } from './Option';
 import { ProxyElement } from './Proxy';
 import {
-    BUILTIN_CHARTS_MAP,
-    BUITIN_COMPONENTS_MAP,
     ChartType,
-    ECComponentOptionName,
     ZRElementEventHandler,
     ZRElementEventName,
-    loadChart,
-    loadComponent,
     loadRenderer
 } from './utility';
 
@@ -62,7 +56,7 @@ export class EChartsElement
         this.attachShadow({ mode: 'open' }).append(
             parseDOM('<div style="height: 100%" />')[0]
         );
-        // this.#boot();
+        this.#boot();
     }
 
     connectedCallback() {
@@ -89,18 +83,7 @@ export class EChartsElement
             theme,
             initOptions
         );
-        props = merge.apply(
-            null,
-            Array.from(this.children, (item: ECOptionElement) => ({
-                [item.chartTagName]:
-                    item.chartTagName === 'series'
-                        ? [item.toJSON()]
-                        : item.toJSON()
-            }))
-        );
-        console.log(props);
-
-        this.setOption(props);
+        this.setOption({ grid: {}, ...props });
 
         for (const [event, handler, selector] of this.#eventHandlers)
             if (selector) this.onChild(event, selector, handler);
@@ -133,14 +116,6 @@ export class EChartsElement
             this.#eventData.push(data);
             return;
         }
-
-        for (const [key, value] of Object.entries(data))
-            if (key in BUITIN_COMPONENTS_MAP)
-                await loadComponent(key as ECComponentOptionName);
-            else if (key === 'series')
-                for (const { type } of makeArray(value) as SeriesOption[])
-                    if (type in BUILTIN_CHARTS_MAP) await loadChart(type);
-
         this.#core.setOption(data, false, true);
     }
 

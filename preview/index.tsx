@@ -1,5 +1,9 @@
 import { DOMRenderer } from 'dom-renderer';
-import '../source/';
+import '../source/chart';
+import '../source/components/title';
+import '../source/components/x-axis';
+import '../source/components/y-axis';
+import '../source/charts/line';
 
 new DOMRenderer().render(
     <ec-chart type="canvas" style={{ height: '75vh' }}>
@@ -11,8 +15,7 @@ new DOMRenderer().render(
         />
         <ec-y-axis type="value" />
 
-        <ec-series
-            type="line"
+        <ec-line-chart
             data={[150, 230, 224, 218, 135, 147, 260]}
             onClick={console.log}
         />

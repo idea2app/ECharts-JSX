@@ -1,20 +1,9 @@
-import { JsxProps } from 'dom-renderer';
 import { EChartsOption } from 'echarts';
-import {
-    CustomElement,
-    HyphenCase,
-    PickSingle,
-    toCamelCase,
-    toHyphenCase
-} from 'web-utility';
+import { CustomElement, toCamelCase } from 'web-utility';
 
-import { EChartsElement } from './Chart';
+import { EChartsElement } from './chart';
 import { ProxyElement } from './Proxy';
 import {
-    BUILTIN_CHARTS_MAP,
-    BUITIN_COMPONENTS_MAP,
-    ECChartOptionName,
-    ECComponentOptionName,
     EventKeyPattern,
     ZRElementEventHandler,
     ZRElementEventName
@@ -29,11 +18,17 @@ export abstract class ECOptionElement
     }
 
     get isSeries() {
-        return this.chartTagName === 'series';
+        return this.chartTagName.endsWith('Chart');
+    }
+
+    get chartName() {
+        return this.isSeries ? this.chartTagName.replace(/Chart$/, '') : null;
     }
 
     get eventSelector() {
-        return [this.chartTagName, this['type']].filter(Boolean).join('.');
+        return [this.chartName || this.chartTagName, this['type']]
+            .filter(Boolean)
+            .join('.');
     }
 
     connectedCallback() {
@@ -58,9 +53,9 @@ export abstract class ECOptionElement
         this.dispatchEvent(
             new CustomEvent('optionchange', {
                 bubbles: true,
-                detail: {
-                    [this.chartTagName]: this.isSeries ? [data] : data
-                }
+                detail: this.isSeries
+                    ? { series: [{ ...data, type: this.chartName }] }
+                    : { [this.chartTagName]: data }
             })
         );
     }
@@ -91,29 +86,5 @@ export abstract class ECOptionElement
         if (key in Object.getPrototypeOf(this)) return;
 
         this[key] = name === value || value;
-    }
-}
-
-const ECOptionNames = [
-    ...Object.keys({ ...BUITIN_COMPONENTS_MAP, ...BUILTIN_CHARTS_MAP }),
-    'series'
-];
-
-for (const name of ECOptionNames)
-    customElements.define(
-        `ec-${toHyphenCase(name)}`,
-        class extends ECOptionElement {}
-    );
-
-type ECOptionName = ECComponentOptionName | ECChartOptionName | 'series';
-
-type ECOptionElements = {
-    [K in ECOptionName as `ec-${HyphenCase<K>}`]: JsxProps<ECOptionElement> &
-        PickSingle<EChartsOption[K]>;
-};
-
-declare global {
-    namespace JSX {
-        interface IntrinsicElements extends ECOptionElements {}
     }
 }
