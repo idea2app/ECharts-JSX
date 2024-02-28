@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "1.0.0-rc.0",
+    "version": "1.0.0-rc.2",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript & Web components",
@@ -26,6 +26,20 @@
     "types": "dist/index.d.ts",
     "module": "dist/index.js",
     "main": "dist/index.umd.js",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.js"
+        },
+        "./*": [
+            "./dist/component/*",
+            "./dist/component/*.d.ts"
+        ]
+    },
+    "engines": {
+        "node": ">=16"
+    },
     "dependencies": {
         "dom-renderer": "^2.1.4",
         "echarts": ">=5",
@@ -46,8 +60,8 @@
         "parcel": "~2.11.0",
         "prettier": "^3.2.5",
         "rimraf": "^5.0.5",
-        "typedoc": "^0.25.8",
-        "typedoc-plugin-mdn-links": "^3.1.16",
+        "typedoc": "^0.25.9",
+        "typedoc-plugin-mdn-links": "^3.1.17",
         "typescript": "~5.3.3"
     },
     "prettier": {
@@ -66,7 +80,7 @@
         "clean": "rimraf .parcel-cache/ dist/ docs/",
         "preview": "npm run clean  &&  cd preview/  &&  parcel --dist-dir=../docs/preview/ --open",
         "pack-preview": "rimraf .parcel-cache/ docs/preview/  &&  cd preview/  &&  parcel build --public-url=. --dist-dir=../docs/preview/",
-        "pack-dist": "rm -rf dist/  &&  microbundle --name EChartsJSX --globals lodash=_,echarts/core=echarts,web-utility=WebUtility",
+        "pack-dist": "rm -rf dist/  &&  tsc  &&  microbundle --name EChartsJSX --globals lodash=_,echarts/core=echarts,web-utility=WebUtility",
         "pack-docs": "rm -rf docs/  &&  typedoc source/",
         "build": "npm run pack-dist  &&  npm run pack-docs  &&  npm run pack-preview",
         "start": "npm run pack-docs  &&  open-cli docs/index.html",
