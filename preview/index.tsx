@@ -1,12 +1,12 @@
 import { DOMRenderer } from 'dom-renderer';
-import '../source/chart';
+import '../source/renderers/SVG';
 import '../source/components/title';
 import '../source/components/x-axis';
 import '../source/components/y-axis';
 import '../source/charts/line';
 
 new DOMRenderer().render(
-    <ec-chart type="canvas" style={{ height: '75vh' }}>
+    <ec-svg-chart style={{ height: '75vh' }}>
         <ec-title text="ECharts Getting Started Example" />
 
         <ec-x-axis
@@ -19,6 +19,6 @@ new DOMRenderer().render(
             data={[150, 230, 224, 218, 135, 147, 260]}
             onClick={console.log}
         />
-    </ec-chart>,
+    </ec-svg-chart>,
     document.querySelector('main')
 );

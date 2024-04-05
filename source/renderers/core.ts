@@ -1,4 +1,3 @@
-import { JsxProps } from 'dom-renderer';
 import { EChartsOption, ResizeOpts } from 'echarts';
 import { ECharts, init } from 'echarts/core';
 import { ECBasicOption } from 'echarts/types/dist/shared';
@@ -6,13 +5,8 @@ import { Observable } from 'iterable-observer';
 import { debounce } from 'lodash';
 import { CustomElement, parseDOM } from 'web-utility';
 
-import { ProxyElement } from './Proxy';
-import {
-    ChartType,
-    ZRElementEventHandler,
-    ZRElementEventName,
-    loadRenderer
-} from './utility';
+import { ProxyElement } from '../Proxy';
+import { ZRElementEventHandler, ZRElementEventName } from '../utility';
 
 export type EChartsElementEventHandler = Partial<
     Record<`on${Capitalize<ZRElementEventName>}`, ZRElementEventHandler>
@@ -21,29 +15,24 @@ export interface EChartsElementProps
     extends ECBasicOption,
         EChartsElementEventHandler {
     theme?: Parameters<typeof init>[1];
-    initOptions?: Parameters<typeof init>[2];
+    initOptions?: Omit<Parameters<typeof init>[2], 'renderer'>;
     resizeOptions?: ResizeOpts;
 }
 
 export type EChartsElementState = EChartsElementProps & EChartsOption;
 
-export class EChartsElement
+export abstract class EChartsElement
     extends ProxyElement<EChartsElementState>
     implements CustomElement
 {
-    #type: ChartType;
     #core?: ECharts;
     #eventHandlers: [ZRElementEventName, ZRElementEventHandler, string?][] = [];
     #eventData = [];
 
-    set type(value: ChartType) {
-        this.#type = value;
-        this.setAttribute('type', value);
-        this.#init(value);
-    }
+    get renderer() {
+        const [_, type] = this.tagName.toLowerCase().split('-');
 
-    get type() {
-        return this.#type;
+        return type;
     }
 
     get options() {
@@ -62,7 +51,7 @@ export class EChartsElement
     connectedCallback() {
         this.style.display = 'block';
 
-        this.type ||= 'svg';
+        this.#init();
 
         globalThis.addEventListener?.('resize', this.handleResize);
     }
@@ -73,15 +62,13 @@ export class EChartsElement
         this.#core?.dispose();
     }
 
-    async #init(type: ChartType) {
-        await loadRenderer(type);
-
+    async #init() {
         var { theme, initOptions, ...props } = this.toJSON();
 
         this.#core = init(
             this.shadowRoot.firstElementChild as HTMLDivElement,
             theme,
-            initOptions
+            { ...initOptions, renderer: this.renderer }
         );
         this.setOption({ grid: {}, ...props });
 
@@ -100,15 +87,8 @@ export class EChartsElement
         for await (const { detail } of Observable.fromEvent<CustomEvent>(
             this,
             'optionchange'
-        )) {
-            const nextTick = new Promise<void>(resolve => {
-                if (this.#core) this.#core.on('finished', resolve);
-                else resolve();
-            });
+        ))
             this.setOption(detail);
-
-            await nextTick;
-        }
     }
 
     async setOption(data: EChartsOption) {
@@ -169,18 +149,4 @@ export class EChartsElement
     handleResize = debounce(() =>
         this.#core.resize(this.toJSON().resizeOptions)
     );
-}
-
-customElements.define('ec-chart', EChartsElement);
-
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            'ec-chart': Omit<
-                JsxProps<EChartsElement>,
-                keyof EChartsElementEventHandler
-            > &
-                EChartsElementProps;
-        }
-    }
 }

@@ -1,7 +1,7 @@
 import { EChartsOption } from 'echarts';
 import { CustomElement, toCamelCase } from 'web-utility';
 
-import { EChartsElement } from './chart';
+import { EChartsElement } from './renderers/core';
 import { ProxyElement } from './Proxy';
 import {
     EventKeyPattern,

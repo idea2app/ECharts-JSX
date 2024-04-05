@@ -11,7 +11,7 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3] & [Web compone
 ## Features
 
 -   [x] All kinds of options & event handlers can be write in **JSX syntax**
--   [x] Async-load required modules automatically
+-   [x] **Tree shaking** supported based on ECMAScript 6+ modules
 
 ## Versions
 
@@ -39,11 +39,7 @@ import { render } from 'react-dom';
 import 'echarts-jsx';
 
 render(
-    <ec-chart
-        type="canvas"
-        theme="dark"
-        style={{ width: '100%', height: '75vh' }}
-    >
+    <ec-svg-chart theme="dark" style={{ width: '100%', height: '75vh' }}>
         <ec-title text="ECharts Getting Started Example" />
 
         <ec-legend data={['sales']} />
@@ -62,13 +58,12 @@ render(
         />
         <ec-y-axis />
 
-        <ec-series
-            type="bar"
+        <ec-bar-chart
             name="sales"
             data={[5, 20, 36, 10, 10, 20]}
             onClick={console.log}
         />
-    </ec-chart>,
+    </ec-svg-chart>,
     document.body
 );
 ```

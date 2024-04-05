@@ -1,7 +1,10 @@
 export * from './utility';
 export * from './Proxy';
+
 export * from './Option';
-export * from './chart';
+export * from './renderers/core';
+export * from './renderers/SVG';
+export * from './renderers/Canvas';
 
 export * from './components/grid';
 export * from './components/polar';
