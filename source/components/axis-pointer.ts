@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-axis-pointer',
-    class ECAxisPointerElement extends ECOptionElement {}
-);
 use(AxisPointerComponent);
+
+export class ECAxisPointerComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-axis-pointer', ECAxisPointerComponent);
 
 declare global {
     namespace JSX {

@@ -24,22 +24,52 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3] & [Web compone
 
 ### Installation
 
+#### Core package
+
 ```shell
 npm i echarts-jsx
 ```
+
+#### View renderer
+
+Any kinds of Render engines that you like can be used to render ECharts JSX tags.
+
+##### React 19+
+
+Old versions have a property bug of Custom elements: https://github.com/facebook/react/issues/11347
+
+```shell
+npm i react@^19 react-dom@^19
+```
+
+##### Preact
+
+```shell
+npm i preact
+```
+
+then configure your tool-chain: https://preactjs.com/guide/v10/getting-started#integrating-into-an-existing-pipeline
+
+##### DOM Renderer v2 & WebCell v3
+
+```shell
+npm i dom-renderer@^2
+```
+
+then configure your project as [the demo code](preview/).
 
 ### Simple example
 
 Origin: [ECharts official example][9]
 
-[![Edit ECharts-JSX-demo](https://codesandbox.io/static/img/play-codesandbox.svg)][10]
+[![Edit ECharts-JSX-1.0-demo](https://codesandbox.io/static/img/play-codesandbox.svg)][10]
 
 ```tsx
 import { render } from 'react-dom';
 import 'echarts-jsx';
 
 render(
-    <ec-svg-chart theme="dark" style={{ width: '100%', height: '75vh' }}>
+    <ec-svg-renderer theme="dark" style={{ width: '100%', height: '75vh' }}>
         <ec-title text="ECharts Getting Started Example" />
 
         <ec-legend data={['sales']} />
@@ -63,7 +93,7 @@ render(
             data={[5, 20, 36, 10, 10, 20]}
             onClick={console.log}
         />
-    </ec-svg-chart>,
+    </ec-svg-renderer>,
     document.body
 );
 ```
@@ -88,4 +118,4 @@ render(
 [7]: https://github.com/ecomfe/awesome-echarts
 [8]: https://nodei.co/npm/echarts-jsx/
 [9]: https://echarts.apache.org/handbook/en/get-started/
-[10]: https://codesandbox.io/p/devbox/5lknyg?migrateFrom=bouwsf&embed=1&file=%2Fsrc%2Fbar.tsx&showConsole=true
+[10]: https://codesandbox.io/p/devbox/echarts-jsx-1-0-demo-h2dz8t?file=%2Fsrc%2FBar.tsx&embed=1

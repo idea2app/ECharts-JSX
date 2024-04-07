@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-timeline',
-    class ECTimelineElement extends ECOptionElement {}
-);
 use(TimelineComponent);
+
+export class ECTimelineComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-timeline', ECTimelineComponent);
 
 declare global {
     namespace JSX {

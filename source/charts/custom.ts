@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-custom-chart',
-    class ECCustomElement extends ECOptionElement {}
-);
 use(CustomChart);
+
+export class ECCustomChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-custom-chart', ECCustomChart);
 
 declare global {
     namespace JSX {

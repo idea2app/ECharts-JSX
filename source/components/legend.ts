@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-legend',
-    class ECLegendElement extends ECOptionElement {}
-);
 use(LegendComponent);
+
+export class ECLegendComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-legend', ECLegendComponent);
 
 declare global {
     namespace JSX {

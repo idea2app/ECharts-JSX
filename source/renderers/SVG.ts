@@ -7,16 +7,16 @@ import {
     EChartsElementProps
 } from './core';
 
-use([SVGRenderer]);
+use(SVGRenderer);
 
-export class ECSVGElement extends EChartsElement {}
+export class ECSVGRenderer extends EChartsElement {}
 
-customElements.define('ec-svg-chart', ECSVGElement);
+customElements.define('ec-svg-renderer', ECSVGRenderer);
 
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-svg-chart': Omit<
+            'ec-svg-renderer': Omit<
                 JsxProps<EChartsElement>,
                 keyof EChartsElementEventHandler
             > &

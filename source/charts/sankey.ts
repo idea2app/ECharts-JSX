@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-sankey-chart',
-    class ECSankeyElement extends ECOptionElement {}
-);
 use(SankeyChart);
+
+export class ECSankeyChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-sankey-chart', ECSankeyChart);
 
 declare global {
     namespace JSX {

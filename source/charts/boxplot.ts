@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-boxplot-chart',
-    class ECBoxplotElement extends ECOptionElement {}
-);
 use(BoxplotChart);
+
+export class ECBoxplotChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-boxplot-chart', ECBoxplotChart);
 
 declare global {
     namespace JSX {

@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-geo',
-    class ECGeoElement extends ECOptionElement {}
-);
 use(GeoComponent);
+
+export class ECGeoComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-geo', ECGeoComponent);
 
 declare global {
     namespace JSX {

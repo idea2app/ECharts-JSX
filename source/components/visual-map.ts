@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-visual-map',
-    class ECVisualMapElement extends ECOptionElement {}
-);
 use(VisualMapComponent);
+
+export class ECVisualMapComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-visual-map', ECVisualMapComponent);
 
 declare global {
     namespace JSX {

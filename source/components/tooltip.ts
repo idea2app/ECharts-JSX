@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-tooltip',
-    class ECTooltipElement extends ECOptionElement {}
-);
 use(TooltipComponent);
+
+export class ECTooltipComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-tooltip', ECTooltipComponent);
 
 declare global {
     namespace JSX {

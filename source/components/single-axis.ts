@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-single-axis',
-    class ECSingleAxisElement extends ECOptionElement {}
-);
 use(SingleAxisComponent);
+
+export class ECSingleAxisComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-single-axis', ECSingleAxisComponent);
 
 declare global {
     namespace JSX {

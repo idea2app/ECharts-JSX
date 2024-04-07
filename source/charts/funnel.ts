@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-funnel-chart',
-    class ECFunnelElement extends ECOptionElement {}
-);
 use(FunnelChart);
+
+export class ECFunnelChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-funnel-chart', ECFunnelChart);
 
 declare global {
     namespace JSX {

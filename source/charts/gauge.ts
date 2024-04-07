@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-gauge-chart',
-    class ECGaugeElement extends ECOptionElement {}
-);
 use(GaugeChart);
+
+export class ECGaugeChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-gauge-chart', ECGaugeChart);
 
 declare global {
     namespace JSX {

@@ -4,10 +4,9 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-radius-axis',
-    class ECRadiusAxisElement extends ECOptionElement {}
-);
+export class ECRadiusAxisComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-radius-axis', ECRadiusAxisComponent);
 
 declare global {
     namespace JSX {

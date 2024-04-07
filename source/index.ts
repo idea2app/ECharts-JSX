@@ -26,6 +26,7 @@ export * from './components/x-axis';
 export * from './components/y-axis';
 export * from './components/angle-axis';
 export * from './components/radius-axis';
+export * from './components/radar';
 
 export * from './charts/line';
 export * from './charts/bar';

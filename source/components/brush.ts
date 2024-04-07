@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-brush',
-    class ECBrushElement extends ECOptionElement {}
-);
 use(BrushComponent);
+
+export class ECBrushComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-brush', ECBrushComponent);
 
 declare global {
     namespace JSX {

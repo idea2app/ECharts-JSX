@@ -7,16 +7,16 @@ import {
     EChartsElementProps
 } from './core';
 
-use([CanvasRenderer]);
+use(CanvasRenderer);
 
-export class ECCanvasElement extends EChartsElement {}
+export class ECCanvasRenderer extends EChartsElement {}
 
-customElements.define('ec-canvas-chart', ECCanvasElement);
+customElements.define('ec-canvas-renderer', ECCanvasRenderer);
 
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-canvas-chart': Omit<
+            'ec-canvas-renderer': Omit<
                 JsxProps<EChartsElement>,
                 keyof EChartsElementEventHandler
             > &

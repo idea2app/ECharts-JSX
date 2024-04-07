@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-heatmap-chart',
-    class ECHeatmapElement extends ECOptionElement {}
-);
 use(HeatmapChart);
+
+export class ECHeatmapChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-heatmap-chart', ECHeatmapChart);
 
 declare global {
     namespace JSX {

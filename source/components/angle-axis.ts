@@ -4,10 +4,9 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-angle-axis',
-    class ECAngleAxisElement extends ECOptionElement {}
-);
+export class ECAngleAxisComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-angle-axis', ECAngleAxisComponent);
 
 declare global {
     namespace JSX {

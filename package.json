@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "1.0.0-rc.5",
+    "version": "1.0.0",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript & Web components",
@@ -66,7 +66,7 @@
         "clean": "rimraf .parcel-cache/ dist/ docs/",
         "preview": "npm run clean  &&  cd preview/  &&  parcel --dist-dir=../docs/preview/",
         "pack-preview": "rimraf .parcel-cache/ docs/preview/  &&  cd preview/  &&  parcel build --public-url=. --dist-dir=../docs/preview/",
-        "pack-dist": "rm -rf dist/  &&  tsc  &&  microbundle --name EChartsJSX --globals lodash=_,echarts/core=echarts,echarts/charts=echarts,echarts/components=echarts,web-utility=WebUtility",
+        "pack-dist": "rm -rf dist/  &&  tsc  &&  microbundle --name EChartsJSX --globals lodash=_,echarts/core=echarts,echarts/renderers=echarts,echarts/charts=echarts,echarts/components=echarts,web-utility=WebUtility",
         "pack-docs": "rm -rf docs/  &&  typedoc source/",
         "build": "npm run pack-dist  &&  npm run pack-docs  &&  npm run pack-preview",
         "start": "npm run pack-docs  &&  open-cli docs/index.html",

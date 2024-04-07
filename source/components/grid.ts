@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-grid',
-    class ECGridElement extends ECOptionElement {}
-);
 use(GridComponent);
+
+export class ECGridComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-grid', ECGridComponent);
 
 declare global {
     namespace JSX {

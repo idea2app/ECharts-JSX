@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-parallel-chart',
-    class ECParallelElement extends ECOptionElement {}
-);
 use(ParallelChart);
+
+export class ECParallelChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-parallel-chart', ECParallelChart);
 
 declare global {
     namespace JSX {

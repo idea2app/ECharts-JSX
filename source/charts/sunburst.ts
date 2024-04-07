@@ -5,11 +5,11 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-sunburst-chart',
-    class ECSunburstElement extends ECOptionElement {}
-);
 use(SunburstChart);
+
+export class ECSunburstChart extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-sunburst-chart', ECSunburstChart);
 
 declare global {
     namespace JSX {

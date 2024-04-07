@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-data-zoom',
-    class ECDataZoomElement extends ECOptionElement {}
-);
 use(DataZoomComponent);
+
+export class ECDataZoomComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-data-zoom', ECDataZoomComponent);
 
 declare global {
     namespace JSX {

@@ -5,11 +5,14 @@ import { use } from 'echarts/core';
 
 import { ECOptionElement } from '../Option';
 
+use(PictorialBarChart);
+
+export class ECPictorialBarChart extends ECOptionElement {}
+
 globalThis.customElements?.define(
     'ec-pictorial-bar-chart',
-    class ECPictorialBarElement extends ECOptionElement {}
+    ECPictorialBarChart
 );
-use(PictorialBarChart);
 
 declare global {
     namespace JSX {

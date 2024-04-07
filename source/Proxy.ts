@@ -43,7 +43,13 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
                 if (EventKeyPattern.test(key)) this.listen(eventName, value);
                 break;
             default:
-                if (value != null) super.setAttribute(name, value + '');
+                if (value != null)
+                    super.setAttribute(
+                        name,
+                        typeof value === 'string'
+                            ? value
+                            : JSON.stringify(value)
+                    );
                 else if (
                     EventKeyPattern.test(key) &&
                     typeof oldValue === 'function'

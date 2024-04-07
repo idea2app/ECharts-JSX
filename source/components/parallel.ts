@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-parallel',
-    class ECParallelElement extends ECOptionElement {}
-);
 use(ParallelComponent);
+
+export class ECParallelComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-parallel', ECParallelComponent);
 
 declare global {
     namespace JSX {

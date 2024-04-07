@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-calendar',
-    class ECCalendarElement extends ECOptionElement {}
-);
 use(CalendarComponent);
+
+export class ECCalendarComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-calendar', ECCalendarComponent);
 
 declare global {
     namespace JSX {

@@ -6,11 +6,11 @@ import { PickSingle } from 'web-utility';
 
 import { ECOptionElement } from '../Option';
 
-globalThis.customElements?.define(
-    'ec-y-axis',
-    class ECYAxisElement extends ECOptionElement {}
-);
 use(GridComponent);
+
+export class ECYAxisComponent extends ECOptionElement {}
+
+globalThis.customElements?.define('ec-y-axis', ECYAxisComponent);
 
 declare global {
     namespace JSX {
