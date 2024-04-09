@@ -3,11 +3,7 @@ import { CustomElement, toCamelCase } from 'web-utility';
 
 import { EChartsElement } from './renderers/core';
 import { ProxyElement } from './Proxy';
-import {
-    EventKeyPattern,
-    ZRElementEventHandler,
-    ZRElementEventName
-} from './utility';
+import { ZRElementEventHandler, ZRElementEventName } from './utility';
 
 export abstract class ECOptionElement
     extends ProxyElement<EChartsOption>
@@ -44,10 +40,11 @@ export abstract class ECOptionElement
             if (parent instanceof EChartsElement) return parent;
     }
 
+    #events: string[] = [];
+
     connectedCallback() {
-        for (const [key, value] of Object.entries(this.toJSON()))
-            if (EventKeyPattern.test(key) && typeof value === 'function')
-                this.addEventListener(key.slice(2), value);
+        for (const event of this.#events) this.#listen(event);
+
         this.update();
     }
 
@@ -73,25 +70,25 @@ export abstract class ECOptionElement
     #emit: ZRElementEventHandler = detail =>
         this.dispatchEvent(new CustomEvent(`ec-${detail.type}`, { detail }));
 
-    addEventListener(event: string, handler: EventListener) {
-        if (!this.isConnected) return;
-
-        this.renderer?.onChild(
+    #listen = (event: string) =>
+        this.renderer.core.on(
             event as ZRElementEventName,
             this.eventSelector,
             this.#emit
         );
+    addEventListener(event: string, handler: EventListener) {
+        if (this.renderer) this.#listen(event);
+        else this.#events.push(event);
+
+        super.removeEventListener(`ec-${event}`, handler);
         super.addEventListener(`ec-${event}`, handler);
     }
 
     removeEventListener(event: string, handler: EventListener) {
-        if (!this.isConnected) return;
+        if (this.renderer)
+            this.renderer.core.off(event as ZRElementEventName, this.#emit);
+        else this.#events = this.#events.filter(name => name !== event);
 
-        this.renderer?.offChild(
-            event as ZRElementEventName,
-            this.eventSelector,
-            this.#emit
-        );
         super.removeEventListener(`ec-${event}`, handler);
     }
 

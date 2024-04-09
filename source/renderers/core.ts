@@ -25,8 +25,9 @@ export abstract class EChartsElement
     extends ProxyElement<EChartsElementState>
     implements CustomElement
 {
-    #core?: ECharts;
-    #eventHandlers: [ZRElementEventName, ZRElementEventHandler, string?][] = [];
+    core?: ECharts;
+
+    #eventHandlers: [ZRElementEventName, ZRElementEventHandler][] = [];
     #eventData = [];
 
     get renderer() {
@@ -36,7 +37,7 @@ export abstract class EChartsElement
     }
 
     get options() {
-        return this.#core.getOption();
+        return this.core.getOption();
     }
 
     constructor() {
@@ -59,26 +60,22 @@ export abstract class EChartsElement
     disconnectedCallback() {
         globalThis.removeEventListener?.('resize', this.handleResize);
 
-        this.#core?.dispose();
+        this.core?.dispose();
     }
 
     async #init() {
         var { theme, initOptions, ...props } = this.toJSON();
 
-        this.#core = init(
+        this.core = init(
             this.shadowRoot.firstElementChild as HTMLDivElement,
             theme,
             { ...initOptions, renderer: this.renderer }
         );
         this.setOption({ grid: {}, ...props });
 
-        for (const [event, handler, selector] of this.#eventHandlers)
-            if (selector) this.onChild(event, selector, handler);
-            else
-                this.addEventListener(
-                    event,
-                    handler as unknown as EventListener
-                );
+        for (const [event, handler] of this.#eventHandlers)
+            this.addEventListener(event, handler as unknown as EventListener);
+
         this.#eventHandlers.length = 0;
 
         for (const option of this.#eventData) this.setOption(option);
@@ -95,11 +92,11 @@ export abstract class EChartsElement
     }
 
     async setOption(data: EChartsOption) {
-        if (!this.#core) {
+        if (!this.core) {
             this.#eventData.push(data);
             return;
         }
-        this.#core.setOption(data, false, true);
+        this.core.setOption(data, false, true);
     }
 
     setProperty(key: string, value: any) {
@@ -112,7 +109,7 @@ export abstract class EChartsElement
         if (event === 'optionchange')
             return super.addEventListener(event, handler);
 
-        if (this.#core) this.#core.getZr().on(event, handler);
+        if (this.core) this.core.getZr().on(event, handler);
         else
             this.#eventHandlers.push([
                 event as ZRElementEventName,
@@ -120,49 +117,22 @@ export abstract class EChartsElement
             ]);
     }
 
-    onChild(
-        event: ZRElementEventName,
-        selector: string,
-        handler: ZRElementEventHandler
-    ) {
-        if (this.#core) this.#core.on(event, selector, handler);
-        else this.#eventHandlers.push([event, handler, selector]);
-    }
-
     removeEventListener(event: string, handler: EventListener) {
         if (event === 'optionchange')
             return super.removeEventListener(event, handler);
 
-        if (this.#core) this.#core.getZr().off(event, handler);
+        if (this.core) this.core.getZr().off(event, handler);
         else {
             const index = this.#eventHandlers.findIndex(
                 item =>
                     item[0] === event &&
-                    item[1] === (handler as unknown as ZRElementEventHandler) &&
-                    !item[2]
-            );
-            if (index > -1) this.#eventHandlers.splice(index, 1);
-        }
-    }
-
-    offChild(
-        event: ZRElementEventName,
-        selector: string,
-        handler: ZRElementEventHandler
-    ) {
-        if (this.#core) this.#core.off(event, handler);
-        else {
-            const index = this.#eventHandlers.findIndex(
-                item =>
-                    item[0] === event &&
-                    item[1] === handler &&
-                    item[2] === selector
+                    item[1] === (handler as unknown as ZRElementEventHandler)
             );
             if (index > -1) this.#eventHandlers.splice(index, 1);
         }
     }
 
     handleResize = debounce(() =>
-        this.#core.resize(this.toJSON().resizeOptions)
+        this.core.resize(this.toJSON().resizeOptions)
     );
 }
