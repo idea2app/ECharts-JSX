@@ -20,21 +20,19 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3] & [Web compone
 | `>=1`  |  `main`  | ✅developing | Web components |
 |  `<1`  | `master` | ❌deprecated |     React      |
 
-## Quick start
+## Installation
 
-### Installation
-
-#### Core package
+### Core package
 
 ```shell
 npm i echarts-jsx
 ```
 
-#### View renderer
+### View renderer
 
 Any kinds of Render engines that you like can be used to render ECharts JSX tags.
 
-##### React 19+
+#### React 19+
 
 Old versions have a property bug of Custom elements: https://github.com/facebook/react/issues/11347
 
@@ -42,7 +40,7 @@ Old versions have a property bug of Custom elements: https://github.com/facebook
 npm i react@^19 react-dom@^19
 ```
 
-##### Preact
+#### Preact
 
 ```shell
 npm i preact
@@ -50,7 +48,7 @@ npm i preact
 
 then configure your tool-chain: https://preactjs.com/guide/v10/getting-started#integrating-into-an-existing-pipeline
 
-##### DOM Renderer v2 & WebCell v3
+#### DOM Renderer v2 & WebCell v3
 
 ```shell
 npm i dom-renderer@^2
@@ -58,7 +56,32 @@ npm i dom-renderer@^2
 
 then configure your project as [the demo code](preview/).
 
-### Simple example
+#### Vue 3
+
+```shell
+npm create vite vue-echarts-app -- --template vue-ts
+```
+
+then configure your Vite as following code:
+
+```js
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+    plugins: [
+        vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: tag => tag.startsWith('ec-')
+                }
+            }
+        })
+    ]
+});
+```
+
+## Simple example
 
 Origin: [ECharts official example][9]
 
