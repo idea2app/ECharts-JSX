@@ -74,8 +74,11 @@ export abstract class EChartsElement
 
         for (const [event, handler, selector] of this.#eventHandlers)
             if (selector) this.onChild(event, selector, handler);
-            else this.listen(event, handler);
-
+            else
+                this.addEventListener(
+                    event,
+                    handler as unknown as EventListener
+                );
         this.#eventHandlers.length = 0;
 
         for (const option of this.#eventData) this.setOption(option);
@@ -105,9 +108,16 @@ export abstract class EChartsElement
         this.setOption(this.toJSON());
     }
 
-    listen(event: ZRElementEventName, handler: ZRElementEventHandler) {
+    addEventListener(event: string, handler: EventListener) {
+        if (event === 'optionchange')
+            return super.addEventListener(event, handler);
+
         if (this.#core) this.#core.getZr().on(event, handler);
-        else this.#eventHandlers.push([event, handler]);
+        else
+            this.#eventHandlers.push([
+                event as ZRElementEventName,
+                handler as unknown as ZRElementEventHandler
+            ]);
     }
 
     onChild(
@@ -119,11 +129,17 @@ export abstract class EChartsElement
         else this.#eventHandlers.push([event, handler, selector]);
     }
 
-    forget(event: ZRElementEventName, handler: ZRElementEventHandler) {
+    removeEventListener(event: string, handler: EventListener) {
+        if (event === 'optionchange')
+            return super.removeEventListener(event, handler);
+
         if (this.#core) this.#core.getZr().off(event, handler);
         else {
             const index = this.#eventHandlers.findIndex(
-                item => item[0] === event && item[1] === handler && !item[2]
+                item =>
+                    item[0] === event &&
+                    item[1] === (handler as unknown as ZRElementEventHandler) &&
+                    !item[2]
             );
             if (index > -1) this.#eventHandlers.splice(index, 1);
         }

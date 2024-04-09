@@ -26,18 +26,28 @@ export abstract class ECOptionElement
     }
 
     get eventSelector() {
-        return [this.chartName || this.chartTagName, this['type']]
+        return [
+            this.isSeries && 'series',
+            this.chartName || this.chartTagName,
+            this['type']
+        ]
             .filter(Boolean)
             .join('.');
+    }
+
+    get renderer() {
+        for (
+            let parent = this.parentElement;
+            parent;
+            parent = parent.parentElement
+        )
+            if (parent instanceof EChartsElement) return parent;
     }
 
     connectedCallback() {
         for (const [key, value] of Object.entries(this.toJSON()))
             if (EventKeyPattern.test(key) && typeof value === 'function')
-                this.listen(
-                    key.slice(2) as ZRElementEventName,
-                    value as ZRElementEventHandler
-                );
+                this.addEventListener(key.slice(2), value);
         this.update();
     }
 
@@ -60,22 +70,29 @@ export abstract class ECOptionElement
         );
     }
 
-    listen(event: ZRElementEventName, handler: ZRElementEventHandler) {
-        if (this.isConnected)
-            this.closest<EChartsElement>('ec-chart')?.onChild(
-                event,
-                this.eventSelector,
-                handler
-            );
+    #emit: ZRElementEventHandler = detail =>
+        this.dispatchEvent(new CustomEvent(`ec-${detail.type}`, { detail }));
+
+    addEventListener(event: string, handler: EventListener) {
+        if (!this.isConnected) return;
+
+        this.renderer?.onChild(
+            event as ZRElementEventName,
+            this.eventSelector,
+            this.#emit
+        );
+        super.addEventListener(`ec-${event}`, handler);
     }
 
-    forget(event: ZRElementEventName, handler: ZRElementEventHandler) {
-        if (this.isConnected)
-            this.closest<EChartsElement>('ec-chart')?.offChild(
-                event,
-                this.eventSelector,
-                handler
-            );
+    removeEventListener(event: string, handler: EventListener) {
+        if (!this.isConnected) return;
+
+        this.renderer?.offChild(
+            event as ZRElementEventName,
+            this.eventSelector,
+            this.#emit
+        );
+        super.removeEventListener(`ec-${event}`, handler);
     }
 
     setAttribute(name: string, value: string) {

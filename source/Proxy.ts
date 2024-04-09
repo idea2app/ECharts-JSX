@@ -22,9 +22,6 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
         );
     }
 
-    abstract listen(event: string, handler: (event: any) => any): any;
-    abstract forget(event: string, handler: (event: any) => any): any;
-
     setProperty(key: string, value: any) {
         const oldValue = this.#data[key],
             name = toHyphenCase(key),
@@ -40,7 +37,8 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
                 else super.removeAttribute(name);
                 break;
             case 'function':
-                if (EventKeyPattern.test(key)) this.listen(eventName, value);
+                if (EventKeyPattern.test(key))
+                    this.addEventListener(eventName, value);
                 break;
             default:
                 if (value != null)
@@ -54,7 +52,7 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
                     EventKeyPattern.test(key) &&
                     typeof oldValue === 'function'
                 )
-                    this.forget(eventName, value);
+                    this.removeEventListener(eventName, value);
                 else super.removeAttribute(name);
         }
     }
