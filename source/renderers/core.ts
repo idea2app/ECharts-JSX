@@ -1,7 +1,6 @@
 import { EChartsOption, ResizeOpts } from 'echarts';
 import { ECharts, init } from 'echarts/core';
 import { ECBasicOption } from 'echarts/types/dist/shared';
-import { Observable } from 'iterable-observer';
 import { debounce } from 'lodash';
 import { CustomElement, parseDOM } from 'web-utility';
 
@@ -26,6 +25,11 @@ export abstract class EChartsElement
     implements CustomElement
 {
     core?: ECharts;
+    #coreDefer = Promise.withResolvers<void>();
+
+    get ready() {
+        return this.#coreDefer.promise;
+    }
 
     #eventHandlers: [ZRElementEventName, ZRElementEventHandler][] = [];
     #eventData = [];
@@ -46,7 +50,6 @@ export abstract class EChartsElement
         this.attachShadow({ mode: 'open' }).append(
             parseDOM('<div style="height: 100%" />')[0]
         );
-        this.#boot();
     }
 
     connectedCallback() {
@@ -73,6 +76,8 @@ export abstract class EChartsElement
         );
         this.setOption({ grid: {}, ...props });
 
+        this.#coreDefer.resolve();
+
         for (const [event, handler] of this.#eventHandlers)
             this.addEventListener(event, handler as unknown as EventListener);
 
@@ -81,14 +86,6 @@ export abstract class EChartsElement
         for (const option of this.#eventData) this.setOption(option);
 
         this.#eventData.length = 0;
-    }
-
-    async #boot() {
-        for await (const { detail } of Observable.fromEvent<CustomEvent>(
-            this,
-            'optionchange'
-        ))
-            this.setOption(detail);
     }
 
     async setOption(data: EChartsOption) {

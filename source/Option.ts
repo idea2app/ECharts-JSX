@@ -3,7 +3,9 @@ import { CustomElement, toCamelCase } from 'web-utility';
 
 import { EChartsElement } from './renderers/core';
 import { ProxyElement } from './Proxy';
-import { ZRElementEventHandler, ZRElementEventName } from './utility';
+import { ZRElementEventHandler, ZRElementEventName, callBus } from './utility';
+
+const EventHandlerMap = new WeakMap<EventListener, ZRElementEventHandler>();
 
 export abstract class ECOptionElement
     extends ProxyElement<EChartsOption>
@@ -31,66 +33,80 @@ export abstract class ECOptionElement
             .join('.');
     }
 
-    get renderer() {
+    renderer?: EChartsElement;
+
+    constructor() {
+        super();
+
+        this.updateOption.start();
+        this.removeEventListener.start();
+        this.addEventListener.start();
+    }
+
+    async connectedCallback() {
         for (
             let parent = this.parentElement;
             parent;
             parent = parent.parentElement
         )
-            if (parent instanceof EChartsElement) return parent;
-    }
+            if (parent instanceof EChartsElement) this.renderer = parent;
 
-    #events: string[] = [];
+        if (!this.renderer)
+            throw new ReferenceError(
+                `<${this.tagName.toLowerCase()} /> should be append to a DOM tree within <ec-svg-renderer /> or <ec-canvas-renderer />`
+            );
+        await this.renderer.ready;
 
-    connectedCallback() {
-        for (const event of this.#events) this.#listen(event);
-
-        this.update();
+        this.updateOption.run();
+        this.removeEventListener.run();
+        this.addEventListener.run();
     }
 
     setProperty(key: string, value: any) {
         super.setProperty(key, value);
 
-        if (this.isConnected) this.update();
+        this.updateOption();
     }
 
-    update() {
+    updateOption = callBus(() => {
         const data = this.toJSON();
 
-        this.dispatchEvent(
-            new CustomEvent('optionchange', {
-                bubbles: true,
-                detail: this.isSeries
-                    ? { series: [{ ...data, type: this.chartName }] }
-                    : { [this.chartTagName]: data }
-            })
-        );
-    }
+        const option = this.isSeries
+            ? { series: [{ ...data, type: this.chartName }] }
+            : { [this.chartTagName]: data };
 
-    #emit: ZRElementEventHandler = detail =>
-        this.dispatchEvent(new CustomEvent(`ec-${detail.type}`, { detail }));
+        this.renderer.core.setOption(option);
+    });
 
-    #listen = (event: string) =>
+    addEventListener = callBus((name: string, handler: EventListener) => {
+        const wrapper: ZRElementEventHandler = detail => {
+            const event = new CustomEvent(name, { detail }),
+                meta = { enumerable: true, value: this };
+
+            Object.defineProperties(event, {
+                eventPhase: { ...meta, value: Event.AT_TARGET },
+                srcElement: meta,
+                target: meta,
+                currentTarget: meta
+            });
+            handler.call(this, event);
+        };
+
+        EventHandlerMap.set(handler, wrapper);
+
         this.renderer.core.on(
-            event as ZRElementEventName,
+            name as ZRElementEventName,
             this.eventSelector,
-            this.#emit
+            wrapper
         );
-    addEventListener(event: string, handler: EventListener) {
-        if (this.renderer) this.#listen(event);
-        else this.#events.push(event);
+    });
 
-        super.removeEventListener(`ec-${event}`, handler);
-        super.addEventListener(`ec-${event}`, handler);
-    }
-
-    removeEventListener(event: string, handler: EventListener) {
-        if (this.renderer)
-            this.renderer.core.off(event as ZRElementEventName, this.#emit);
-        else this.#events = this.#events.filter(name => name !== event);
-
-        super.removeEventListener(`ec-${event}`, handler);
-    }
+    removeEventListener = callBus((event: string, handler: EventListener) => {
+        this.renderer.core.off(
+            event as ZRElementEventName,
+            EventHandlerMap.get(handler)
+        );
+    });
 
     setAttribute(name: string, value: string) {
         super.setAttribute(name, value);
