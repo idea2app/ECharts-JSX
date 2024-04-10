@@ -60,3 +60,31 @@ export const EventKeyPattern = /^on(\w+)/;
 
 export type ZRElementEventName = ECElementEvent['type'];
 export type ZRElementEventHandler = (event: ECElementEvent) => boolean | void;
+
+const EventHandlerMap = new WeakMap<EventListener, ZRElementEventHandler>();
+
+export function wrapEventHandler(
+    this: EventTarget,
+    name: string,
+    handler: EventListener
+) {
+    const wrapper: ZRElementEventHandler = detail => {
+        const event = new CustomEvent(name, { detail }),
+            meta = { enumerable: true, value: this };
+
+        Object.defineProperties(event, {
+            eventPhase: { ...meta, value: Event.AT_TARGET },
+            srcElement: meta,
+            target: meta,
+            currentTarget: meta
+        });
+        handler.call(this, event);
+    };
+
+    EventHandlerMap.set(handler, wrapper);
+
+    return wrapper;
+}
+
+export const unwrapEventHandler = (handler: EventListener) =>
+    EventHandlerMap.get(handler);

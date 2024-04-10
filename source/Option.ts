@@ -3,9 +3,12 @@ import { CustomElement, toCamelCase } from 'web-utility';
 
 import { EChartsElement } from './renderers/core';
 import { ProxyElement } from './Proxy';
-import { ZRElementEventHandler, ZRElementEventName, callBus } from './utility';
-
-const EventHandlerMap = new WeakMap<EventListener, ZRElementEventHandler>();
+import {
+    ZRElementEventName,
+    callBus,
+    unwrapEventHandler,
+    wrapEventHandler
+} from './utility';
 
 export abstract class ECOptionElement
     extends ProxyElement<EChartsOption>
@@ -75,36 +78,21 @@ export abstract class ECOptionElement
             ? { series: [{ ...data, type: this.chartName }] }
             : { [this.chartTagName]: data };
 
-        this.renderer.core.setOption(option);
+        this.renderer.setOption(option);
     });
 
     addEventListener = callBus((name: string, handler: EventListener) => {
-        const wrapper: ZRElementEventHandler = detail => {
-            const event = new CustomEvent(name, { detail }),
-                meta = { enumerable: true, value: this };
-
-            Object.defineProperties(event, {
-                eventPhase: { ...meta, value: Event.AT_TARGET },
-                srcElement: meta,
-                target: meta,
-                currentTarget: meta
-            });
-            handler.call(this, event);
-        };
-
-        EventHandlerMap.set(handler, wrapper);
-
         this.renderer.core.on(
             name as ZRElementEventName,
             this.eventSelector,
-            wrapper
+            wrapEventHandler.call(this, name, handler)
         );
     });
 
     removeEventListener = callBus((event: string, handler: EventListener) => {
         this.renderer.core.off(
             event as ZRElementEventName,
-            EventHandlerMap.get(handler)
+            unwrapEventHandler(handler)
         );
     });
 

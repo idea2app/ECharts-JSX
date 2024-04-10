@@ -48,6 +48,8 @@ npm i preact
 
 then configure your tool-chain: https://preactjs.com/guide/v10/getting-started#integrating-into-an-existing-pipeline
 
+and write chart codes as this demo: https://idea2app.github.io/React-MobX-Bootstrap-ts/#/chart
+
 #### DOM Renderer v2 & WebCell v3
 
 ```shell
@@ -80,6 +82,8 @@ export default defineConfig({
     ]
 });
 ```
+
+and write chart codes as this demo: https://idea2app.github.io/Vue-Prime-ts/#/chart
 
 ## Simple example
 
@@ -138,7 +142,7 @@ render(
 [4]: https://www.webcomponents.org/
 [5]: https://libraries.io/npm/echarts-jsx
 [6]: https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml
-[7]: https://github.com/ecomfe/awesome-echarts
+[7]: https://github.com/ecomfe/awesome-echarts?tab=readme-ov-file#web-components
 [8]: https://nodei.co/npm/echarts-jsx/
 [9]: https://echarts.apache.org/handbook/en/get-started/
 [10]: https://codesandbox.io/p/devbox/echarts-jsx-1-0-demo-h2dz8t?file=%2Fsrc%2FBar.tsx&embed=1

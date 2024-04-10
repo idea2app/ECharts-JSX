@@ -5,7 +5,13 @@ import { debounce } from 'lodash';
 import { CustomElement, parseDOM } from 'web-utility';
 
 import { ProxyElement } from '../Proxy';
-import { ZRElementEventHandler, ZRElementEventName } from '../utility';
+import {
+    ZRElementEventHandler,
+    ZRElementEventName,
+    callBus,
+    unwrapEventHandler,
+    wrapEventHandler
+} from '../utility';
 
 export type EChartsElementEventHandler = Partial<
     Record<`on${Capitalize<ZRElementEventName>}`, ZRElementEventHandler>
@@ -31,9 +37,6 @@ export abstract class EChartsElement
         return this.#coreDefer.promise;
     }
 
-    #eventHandlers: [ZRElementEventName, ZRElementEventHandler][] = [];
-    #eventData = [];
-
     get renderer() {
         const [_, type] = this.tagName.toLowerCase().split('-');
 
@@ -50,6 +53,9 @@ export abstract class EChartsElement
         this.attachShadow({ mode: 'open' }).append(
             parseDOM('<div style="height: 100%" />')[0]
         );
+        this.setOption.start();
+        this.removeEventListener.start();
+        this.addEventListener.start();
     }
 
     connectedCallback() {
@@ -66,7 +72,7 @@ export abstract class EChartsElement
         this.core?.dispose();
     }
 
-    async #init() {
+    #init() {
         var { theme, initOptions, ...props } = this.toJSON();
 
         this.core = init(
@@ -74,27 +80,17 @@ export abstract class EChartsElement
             theme,
             { ...initOptions, renderer: this.renderer }
         );
-        this.setOption({ grid: {}, ...props });
-
         this.#coreDefer.resolve();
 
-        for (const [event, handler] of this.#eventHandlers)
-            this.addEventListener(event, handler as unknown as EventListener);
-
-        this.#eventHandlers.length = 0;
-
-        for (const option of this.#eventData) this.setOption(option);
-
-        this.#eventData.length = 0;
+        this.setOption({ grid: {}, ...props });
+        this.setOption.run();
+        this.removeEventListener.run();
+        this.addEventListener.run();
     }
 
-    async setOption(data: EChartsOption) {
-        if (!this.core) {
-            this.#eventData.push(data);
-            return;
-        }
-        this.core.setOption(data, false, true);
-    }
+    setOption = callBus((data: EChartsOption) =>
+        this.core.setOption(data, false, true)
+    );
 
     setProperty(key: string, value: any) {
         super.setProperty(key, value);
@@ -102,32 +98,18 @@ export abstract class EChartsElement
         this.setOption(this.toJSON());
     }
 
-    addEventListener(event: string, handler: EventListener) {
-        if (event === 'optionchange')
-            return super.addEventListener(event, handler);
-
-        if (this.core) this.core.getZr().on(event, handler);
-        else
-            this.#eventHandlers.push([
-                event as ZRElementEventName,
-                handler as unknown as ZRElementEventHandler
-            ]);
-    }
-
-    removeEventListener(event: string, handler: EventListener) {
-        if (event === 'optionchange')
-            return super.removeEventListener(event, handler);
-
-        if (this.core) this.core.getZr().off(event, handler);
-        else {
-            const index = this.#eventHandlers.findIndex(
-                item =>
-                    item[0] === event &&
-                    item[1] === (handler as unknown as ZRElementEventHandler)
+    addEventListener = callBus((name: string, handler: EventListener) => {
+        this.core
+            .getZr()
+            .on(
+                name as ZRElementEventName,
+                wrapEventHandler.call(this, name, handler)
             );
-            if (index > -1) this.#eventHandlers.splice(index, 1);
-        }
-    }
+    });
+
+    removeEventListener = callBus((event: string, handler: EventListener) => {
+        this.core.getZr().off(event, unwrapEventHandler(handler));
+    });
 
     handleResize = debounce(() =>
         this.core.resize(this.toJSON().resizeOptions)
