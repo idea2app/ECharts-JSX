@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "1.0.4",
+    "version": "1.1.0",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript & Web components",
@@ -48,7 +48,7 @@
         "rimraf": "^5.0.5",
         "typedoc": "^0.25.13",
         "typedoc-plugin-mdn-links": "^3.1.19",
-        "typescript": "~5.4.4"
+        "typescript": "~5.4.5"
     },
     "prettier": {
         "singleQuote": true,

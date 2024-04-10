@@ -6,7 +6,7 @@ import '../source/components/y-axis';
 import '../source/charts/line';
 
 new DOMRenderer().render(
-    <ec-svg-renderer style={{ height: '75vh' }} onClick={console.log}>
+    <ec-svg-renderer style={{ height: '75vh' }}>
         <ec-title text="ECharts Getting Started Example" />
 
         <ec-x-axis
