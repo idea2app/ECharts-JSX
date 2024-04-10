@@ -37,8 +37,10 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
                 else super.removeAttribute(name);
                 break;
             case 'function':
-                if (EventKeyPattern.test(key))
+                if (EventKeyPattern.test(key)) {
+                    this.removeEventListener(eventName, oldValue);
                     this.addEventListener(eventName, value);
+                }
                 break;
             default:
                 if (value != null)

@@ -6,7 +6,7 @@
         "allowSyntheticDefaultImports": true,
         "jsx": "react-jsx",
         "jsxImportSource": "dom-renderer",
-        "lib": ["ES2022", "DOM"],
+        "lib": ["ESNext", "DOM"],
         "skipLibCheck": true,
         "declaration": true,
         "sourceMap": true,
