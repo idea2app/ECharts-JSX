@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript & Web components",
@@ -31,7 +31,7 @@
         "echarts": ">=5",
         "iterable-observer": "^1.0.1",
         "lodash": "^4.17.21",
-        "web-utility": "^4.3.0"
+        "web-utility": "^4.4.0"
     },
     "peerDependencies": {
         "@webcomponents/webcomponentsjs": "^2.8"
@@ -39,15 +39,15 @@
     "devDependencies": {
         "@types/lodash": "^4.17.0",
         "buffer": "^6.0.3",
+        "esbuild": "^0.20.2",
         "husky": "^9.0.11",
         "lint-staged": "^15.2.2",
-        "microbundle": "^0.15.1",
         "open-cli": "^8.0.0",
         "parcel": "~2.12.0",
         "prettier": "^3.2.5",
         "rimraf": "^5.0.5",
         "typedoc": "^0.25.13",
-        "typedoc-plugin-mdn-links": "^3.1.19",
+        "typedoc-plugin-mdn-links": "^3.1.23",
         "typescript": "~5.4.5"
     },
     "prettier": {
@@ -66,7 +66,7 @@
         "clean": "rimraf .parcel-cache/ dist/ docs/",
         "preview": "npm run clean  &&  cd preview/  &&  parcel --dist-dir=../docs/preview/",
         "pack-preview": "rimraf .parcel-cache/ docs/preview/  &&  cd preview/  &&  parcel build --public-url=. --dist-dir=../docs/preview/",
-        "pack-dist": "rm -rf dist/  &&  tsc  &&  microbundle --name EChartsJSX --globals lodash=_,echarts/core=echarts,echarts/renderers=echarts,echarts/charts=echarts,echarts/components=echarts,web-utility=WebUtility",
+        "pack-dist": "rm -rf dist/  &&  tsc  &&  esbuild source/index.ts --target=edge18 --bundle --minify --sourcemap --outfile=dist/index.umd.js",
         "pack-docs": "rm -rf docs/  &&  typedoc source/",
         "build": "npm run pack-dist  &&  npm run pack-docs  &&  npm run pack-preview",
         "start": "npm run pack-docs  &&  open-cli docs/index.html",
