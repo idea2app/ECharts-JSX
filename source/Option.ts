@@ -47,6 +47,8 @@ export abstract class ECOptionElement
     }
 
     async connectedCallback() {
+        super.connectedCallback();
+
         for (
             let parent = this.parentElement;
             parent;
@@ -65,10 +67,15 @@ export abstract class ECOptionElement
         this.addEventListener.run();
     }
 
+    #nextTick?: Promise<void>;
+
     setProperty(key: string, value: any) {
         super.setProperty(key, value);
 
-        this.updateOption();
+        this.#nextTick ??= Promise.resolve().then(() => {
+            this.updateOption();
+            this.#nextTick = null;
+        });
     }
 
     updateOption = callBus(() => {
@@ -95,14 +102,4 @@ export abstract class ECOptionElement
             unwrapEventHandler(handler)
         );
     });
-
-    setAttribute(name: string, value: string) {
-        super.setAttribute(name, value);
-
-        const key = toCamelCase(name);
-
-        if (key in Object.getPrototypeOf(this)) return;
-
-        this[key] = name === value || value;
-    }
 }

@@ -1,4 +1,8 @@
 import { ECElementEvent } from 'echarts/core';
+import {
+    ReadableStream,
+    ReadableStreamDefaultController
+} from 'web-streams-polyfill';
 
 export interface QueueTask {
     context: object;
@@ -16,8 +20,15 @@ export interface CallBusHandlers {
 }
 
 export function callBus<T>(worker: (...data: any[]) => T) {
-    const queue = [Promise.withResolvers<QueueTask>()],
-        clutch = Promise.withResolvers<void>();
+    const clutch = Promise.withResolvers<void>();
+
+    var handler: ReadableStreamDefaultController<QueueTask>;
+
+    const stream = new ReadableStream<QueueTask>({
+        start: controller => {
+            handler = controller;
+        }
+    });
 
     function addTask(context: object, input: any[]) {
         const task = {
@@ -25,9 +36,7 @@ export function callBus<T>(worker: (...data: any[]) => T) {
             input,
             output: Promise.withResolvers<T>()
         };
-        queue.at(-1).resolve(task);
-
-        queue.push(Promise.withResolvers());
+        handler.enqueue(task);
 
         return task;
     }
@@ -37,8 +46,7 @@ export function callBus<T>(worker: (...data: any[]) => T) {
     async function start() {
         await clutch.promise;
 
-        for (let task = queue.shift(); task; task = queue.shift()) {
-            const { context, input, output } = await task.promise;
+        for await (const { context, input, output } of stream)
             try {
                 const data = await worker.apply(context, input);
 
@@ -46,7 +54,6 @@ export function callBus<T>(worker: (...data: any[]) => T) {
             } catch (error) {
                 output.reject(error);
             }
-        }
     }
     return Object.assign<CallBusWrapper<T>, CallBusHandlers>(
         function (...input) {

@@ -20,13 +20,16 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      web-streams-polyfill:
+        specifier: ^4.0.0
+        version: 4.0.0
       web-utility:
         specifier: ^4.4.0
         version: 4.4.0(typescript@5.4.5)
     devDependencies:
       '@types/lodash':
-        specifier: ^4.17.0
-        version: 4.17.0
+        specifier: ^4.17.1
+        version: 4.17.1
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -674,8 +677,8 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
 
-  '@types/lodash@4.17.0':
-    resolution: {integrity: sha512-t7dhREVv6dbNj0q17X12j7yDG4bD/DHYX7o5/DbDxobP0HnGPgpRz2Ej77aL7TZT3DSw13fqUTj8J4mMnqa7WA==}
+  '@types/lodash@4.17.1':
+    resolution: {integrity: sha512-X+2qazGS3jxLAIz5JDXDzglAF3KpijdhFxlf/V1+hEsOUc+HnWi81L/uv/EvGuV90WY+7mPGFCUDGfQC3Gj95Q==}
 
   abortcontroller-polyfill@1.7.5:
     resolution: {integrity: sha512-JMJ5soJWP18htbbxJjG7bG6yuI6pRhgJ0scHHTfkUjf6wjP912xZWvM+A4sJK3gqd9E8fcPbDnOefbA9Th/FIQ==}
@@ -1585,6 +1588,10 @@ packages:
   weak-lru-cache@1.2.2:
     resolution: {integrity: sha512-DEAoo25RfSYMuTGc9vPJzZcZullwIqRDSI9LOy+fkCJPi6hykCnfKaXTuPBDuXAUcqHXyOgFtHNp/kB2FjYHbw==}
 
+  web-streams-polyfill@4.0.0:
+    resolution: {integrity: sha512-0zJXHRAYEjM2tUfZ2DiSOHAa2aw1tisnnhU3ufD57R8iefL+DcdJyRBRyJpG+NUimDgbTI/lH+gAE1PAvV3Cgw==}
+    engines: {node: '>= 8'}
+
   web-utility@4.4.0:
     resolution: {integrity: sha512-Bw0RcX5jBNuw+FQ2NKkkegNK07czjXoUtDNpRO+2ueNNv3FL8GsTTU27eM+17bzFPpYqukAdkCLJf5ZAYiDZtg==}
     peerDependencies:
@@ -2439,7 +2446,7 @@ snapshots:
 
   '@trysound/sax@0.2.0': {}
 
-  '@types/lodash@4.17.0': {}
+  '@types/lodash@4.17.1': {}
 
   abortcontroller-polyfill@1.7.5: {}
 
@@ -3287,6 +3294,8 @@ snapshots:
   vscode-textmate@8.0.0: {}
 
   weak-lru-cache@1.2.2: {}
+
+  web-streams-polyfill@4.0.0: {}
 
   web-utility@4.4.0(typescript@5.4.5):
     dependencies:

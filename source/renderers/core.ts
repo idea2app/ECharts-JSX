@@ -59,6 +59,8 @@ export abstract class EChartsElement
     }
 
     connectedCallback() {
+        super.connectedCallback();
+
         this.style.display = 'block';
 
         this.#init();
