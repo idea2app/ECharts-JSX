@@ -4,8 +4,8 @@ import { CustomElement, toCamelCase } from 'web-utility';
 import { EChartsElement } from './renderers/core';
 import { ProxyElement } from './Proxy';
 import {
-    ZRElementEventName,
-    callBus,
+    ZRElementEventHandler,
+    streamRequest,
     unwrapEventHandler,
     wrapEventHandler
 } from './utility';
@@ -38,15 +38,7 @@ export abstract class ECOptionElement
 
     renderer?: EChartsElement;
 
-    constructor() {
-        super();
-
-        this.updateOption.start();
-        this.removeEventListener.start();
-        this.addEventListener.start();
-    }
-
-    async connectedCallback() {
+    connectedCallback() {
         super.connectedCallback();
 
         for (
@@ -60,11 +52,9 @@ export abstract class ECOptionElement
             throw new ReferenceError(
                 `<${this.tagName.toLowerCase()} /> should be append to a DOM tree within <ec-svg-renderer /> or <ec-canvas-renderer />`
             );
-        await this.renderer.ready;
-
-        this.updateOption.run();
-        this.removeEventListener.run();
-        this.addEventListener.run();
+        this.renderer.connectOption(this.emitOption.stream);
+        this.renderer.connectAddListener(this.emitAddListener.stream);
+        this.renderer.connectRemoveListener(this.emitRemoveListener.stream);
     }
 
     #nextTick?: Promise<void>;
@@ -78,28 +68,33 @@ export abstract class ECOptionElement
         });
     }
 
-    updateOption = callBus(() => {
+    emitOption = streamRequest<[EChartsOption]>();
+
+    updateOption() {
         const data = this.toJSON();
 
-        const option = this.isSeries
-            ? { series: [{ ...data, type: this.chartName }] }
-            : { [this.chartTagName]: data };
+        const option = (
+            this.isSeries
+                ? { series: [{ ...data, type: this.chartName }] }
+                : { [this.chartTagName]: data }
+        ) as EChartsOption;
 
-        this.renderer.setOption(option);
-    });
+        return this.emitOption(option);
+    }
 
-    addEventListener = callBus((name: string, handler: EventListener) => {
-        this.renderer.core.on(
-            name as ZRElementEventName,
+    emitAddListener = streamRequest<[string, string, ZRElementEventHandler]>();
+
+    addEventListener(name: string, handler: EventListener) {
+        return this.emitAddListener(
+            name,
             this.eventSelector,
             wrapEventHandler.call(this, name, handler)
         );
-    });
+    }
 
-    removeEventListener = callBus((event: string, handler: EventListener) => {
-        this.renderer.core.off(
-            event as ZRElementEventName,
-            unwrapEventHandler(handler)
-        );
-    });
+    emitRemoveListener = streamRequest<[string, ZRElementEventHandler]>();
+
+    removeEventListener(event: string, handler: EventListener) {
+        return this.emitRemoveListener(event, unwrapEventHandler(handler));
+    }
 }

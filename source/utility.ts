@@ -4,63 +4,33 @@ import {
     ReadableStreamDefaultController
 } from 'web-streams-polyfill';
 
-export interface QueueTask {
-    context: object;
-    input: any[];
-    output: PromiseWithResolvers<any>;
+export interface StreamRequest<I extends any[], O = void> {
+    context?: object;
+    input: I;
+    output: PromiseWithResolvers<O>;
 }
 
-export interface CallBusWrapper<T> {
-    (...data: any[]): Promise<T>;
-}
+export function streamRequest<I extends any[], O = void>() {
+    var handler: ReadableStreamDefaultController<StreamRequest<I, O>>;
 
-export interface CallBusHandlers {
-    start: () => Promise<void>;
-    run: () => void;
-}
-
-export function callBus<T>(worker: (...data: any[]) => T) {
-    const clutch = Promise.withResolvers<void>();
-
-    var handler: ReadableStreamDefaultController<QueueTask>;
-
-    const stream = new ReadableStream<QueueTask>({
+    const stream = new ReadableStream<StreamRequest<I, O>>({
         start: controller => {
             handler = controller;
         }
     });
 
-    function addTask(context: object, input: any[]) {
-        const task = {
-            context,
+    function call(...input: I) {
+        const request = {
+            context: this,
             input,
-            output: Promise.withResolvers<T>()
+            output: Promise.withResolvers<O>()
         };
-        handler.enqueue(task);
+        handler.enqueue(request);
 
-        return task;
+        return request.output.promise;
     }
 
-    const run = () => clutch.resolve();
-
-    async function start() {
-        await clutch.promise;
-
-        for await (const { context, input, output } of stream)
-            try {
-                const data = await worker.apply(context, input);
-
-                output.resolve(data);
-            } catch (error) {
-                output.reject(error);
-            }
-    }
-    return Object.assign<CallBusWrapper<T>, CallBusHandlers>(
-        function (...input) {
-            return addTask(this, input).output.promise;
-        },
-        { start, run }
-    );
+    return Object.assign(call, { stream });
 }
 
 export const EventKeyPattern = /^on(\w+)/;
