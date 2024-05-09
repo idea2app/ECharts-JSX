@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "1.2.0-rc.0",
+    "version": "1.2.0-rc.1",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript & Web components",
@@ -40,7 +40,7 @@
     "devDependencies": {
         "@types/lodash": "^4.17.1",
         "buffer": "^6.0.3",
-        "esbuild": "^0.20.2",
+        "esbuild": "^0.21.1",
         "husky": "^9.0.11",
         "lint-staged": "^15.2.2",
         "open-cli": "^8.0.0",

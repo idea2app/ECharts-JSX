@@ -41,6 +41,8 @@ export abstract class ECOptionElement
     connectedCallback() {
         super.connectedCallback();
 
+        if (!this.attributes[0]) this.updateOption();
+
         for (
             let parent = this.parentElement;
             parent;

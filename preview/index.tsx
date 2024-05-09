@@ -1,24 +1,26 @@
 import { DOMRenderer } from 'dom-renderer';
-import '../source/renderers/SVG';
-import '../source/components/title';
-import '../source/components/x-axis';
-import '../source/components/y-axis';
-import '../source/charts/line';
+
+import { BarChart } from './chart/Bar';
+import { CandleStickChart } from './chart/CandleStick';
+import { FunnelChart } from './chart/Funnel';
+import { GaugeChart } from './chart/Gauge';
+import { LineChart } from './chart/Line';
+import { PieChart } from './chart/Pie';
+import { RadarChart } from './chart/Radar';
+import { ScatterChart } from './chart/Scatter';
 
 new DOMRenderer().render(
-    <ec-svg-renderer style={{ height: '75vh' }}>
-        <ec-title text="ECharts Getting Started Example" />
+    <>
+        <h1>ECharts JSX demo</h1>
 
-        <ec-x-axis
-            type="category"
-            data={['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']}
-        />
-        <ec-y-axis type="value" />
-
-        <ec-line-chart
-            data={[150, 230, 224, 218, 135, 147, 260]}
-            onClick={console.log}
-        />
-    </ec-svg-renderer>,
+        <ScatterChart />
+        <LineChart />
+        <BarChart />
+        <CandleStickChart />
+        <FunnelChart />
+        <PieChart />
+        <RadarChart />
+        <GaugeChart />
+    </>,
     document.querySelector('main')
 );
