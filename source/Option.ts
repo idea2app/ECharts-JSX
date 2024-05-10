@@ -36,7 +36,7 @@ export abstract class ECOptionElement
             .join('.');
     }
 
-    renderer?: EChartsElement;
+    #renderer?: EChartsElement;
 
     connectedCallback() {
         super.connectedCallback();
@@ -48,15 +48,15 @@ export abstract class ECOptionElement
             parent;
             parent = parent.parentElement
         )
-            if (parent instanceof EChartsElement) this.renderer = parent;
+            if (parent instanceof EChartsElement) this.#renderer = parent;
 
-        if (!this.renderer)
+        if (!this.#renderer)
             throw new ReferenceError(
                 `<${this.tagName.toLowerCase()} /> should be append to a DOM tree within <ec-svg-renderer /> or <ec-canvas-renderer />`
             );
-        this.renderer.connectOption(this.emitOption.stream);
-        this.renderer.connectAddListener(this.emitAddListener.stream);
-        this.renderer.connectRemoveListener(this.emitRemoveListener.stream);
+        this.#renderer.connectOption(this.emitOption.stream);
+        this.#renderer.connectRemoveListener(this.emitRemoveListener.stream);
+        this.#renderer.connectAddListener(this.emitAddListener.stream);
     }
 
     #nextTick?: Promise<void>;
@@ -72,13 +72,16 @@ export abstract class ECOptionElement
 
     emitOption = streamRequest<[EChartsOption]>();
 
+    declare formatter?: Function;
+
     updateOption() {
-        const data = this.toJSON();
+        const data = this.toJSON(),
+            { formatter } = this;
 
         const option = (
             this.isSeries
                 ? { series: [{ ...data, type: this.chartName }] }
-                : { [this.chartTagName]: data }
+                : { [this.chartTagName]: { ...data, formatter } }
         ) as EChartsOption;
 
         return this.emitOption(option);

@@ -18,7 +18,8 @@ export abstract class ProxyElement<T extends object>
     toJSON() {
         return Object.fromEntries(
             Object.entries(this.#data).filter(
-                ([key]) => !key.startsWith('__react')
+                ([key, value]) =>
+                    typeof value !== 'function' && !key.startsWith('__react')
             )
         );
     }
