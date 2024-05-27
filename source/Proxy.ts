@@ -1,15 +1,25 @@
 import { ECElementEvent } from 'echarts';
-import { proxyPrototype, toHyphenCase } from 'web-utility';
+import {
+    CustomElement,
+    parseJSON,
+    proxyPrototype,
+    toCamelCase,
+    toHyphenCase
+} from 'web-utility';
 
 import { EventKeyPattern } from './utility';
 
-export abstract class ProxyElement<T extends object> extends HTMLElement {
+export abstract class ProxyElement<T extends object>
+    extends HTMLElement
+    implements CustomElement
+{
     #data = {} as T;
 
     toJSON() {
         return Object.fromEntries(
             Object.entries(this.#data).filter(
-                ([key]) => !key.startsWith('__react')
+                ([key, value]) =>
+                    typeof value !== 'function' && !key.startsWith('__react')
             )
         );
     }
@@ -20,6 +30,17 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
         proxyPrototype(this, this.#data, (key, value) =>
             this.setProperty(key.toString(), value)
         );
+    }
+
+    connectedCallback() {
+        const prototype = Object.getPrototypeOf(this);
+
+        const customAttributes = [...this.attributes].filter(
+            ({ name }) => !(name in prototype)
+        );
+        if (customAttributes[0] && !Object.keys(this.toJSON())[0])
+            for (const { name, value } of customAttributes)
+                this.setAttribute(name, value);
     }
 
     setProperty(key: string, value: any) {
@@ -57,5 +78,15 @@ export abstract class ProxyElement<T extends object> extends HTMLElement {
                     this.removeEventListener(eventName, value);
                 else super.removeAttribute(name);
         }
+    }
+
+    setAttribute(name: string, value: string) {
+        super.setAttribute(name, value);
+
+        const key = toCamelCase(name);
+
+        if (key in Object.getPrototypeOf(this)) return;
+
+        this[key] = name === value || parseJSON(value);
     }
 }

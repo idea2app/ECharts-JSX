@@ -4,8 +4,8 @@ import { CustomElement, toCamelCase } from 'web-utility';
 import { EChartsElement } from './renderers/core';
 import { ProxyElement } from './Proxy';
 import {
-    ZRElementEventName,
-    callBus,
+    ZRElementEventHandler,
+    streamRequest,
     unwrapEventHandler,
     wrapEventHandler
 } from './utility';
@@ -36,73 +36,72 @@ export abstract class ECOptionElement
             .join('.');
     }
 
-    renderer?: EChartsElement;
+    #renderer?: EChartsElement;
 
-    constructor() {
-        super();
+    connectedCallback() {
+        if (this.#renderer) return;
 
-        this.updateOption.start();
-        this.removeEventListener.start();
-        this.addEventListener.start();
-    }
+        super.connectedCallback();
 
-    async connectedCallback() {
+        if (!this.attributes[0]) this.updateOption();
+
         for (
             let parent = this.parentElement;
             parent;
             parent = parent.parentElement
         )
-            if (parent instanceof EChartsElement) this.renderer = parent;
+            if (parent instanceof EChartsElement) this.#renderer = parent;
 
-        if (!this.renderer)
+        if (!this.#renderer)
             throw new ReferenceError(
                 `<${this.tagName.toLowerCase()} /> should be append to a DOM tree within <ec-svg-renderer /> or <ec-canvas-renderer />`
             );
-        await this.renderer.ready;
-
-        this.updateOption.run();
-        this.removeEventListener.run();
-        this.addEventListener.run();
+        this.#renderer.connectOption(this.emitOption.stream);
+        this.#renderer.connectRemoveListener(this.emitRemoveListener.stream);
+        this.#renderer.connectAddListener(this.emitAddListener.stream);
     }
+
+    #nextTick?: Promise<void>;
 
     setProperty(key: string, value: any) {
         super.setProperty(key, value);
 
-        this.updateOption();
+        this.#nextTick ??= Promise.resolve().then(() => {
+            this.updateOption();
+            this.#nextTick = null;
+        });
     }
 
-    updateOption = callBus(() => {
-        const data = this.toJSON();
+    emitOption = streamRequest<[EChartsOption]>();
 
-        const option = this.isSeries
-            ? { series: [{ ...data, type: this.chartName }] }
-            : { [this.chartTagName]: data };
+    declare formatter?: Function;
 
-        this.renderer.setOption(option);
-    });
+    updateOption() {
+        const data = this.toJSON(),
+            { formatter } = this;
 
-    addEventListener = callBus((name: string, handler: EventListener) => {
-        this.renderer.core.on(
-            name as ZRElementEventName,
+        const option = (
+            this.isSeries
+                ? { series: [{ ...data, type: this.chartName }] }
+                : { [this.chartTagName]: { ...data, formatter } }
+        ) as EChartsOption;
+
+        return this.emitOption(option);
+    }
+
+    emitAddListener = streamRequest<[string, string, ZRElementEventHandler]>();
+
+    addEventListener(name: string, handler: EventListener) {
+        return this.emitAddListener(
+            name,
             this.eventSelector,
             wrapEventHandler.call(this, name, handler)
         );
-    });
+    }
 
-    removeEventListener = callBus((event: string, handler: EventListener) => {
-        this.renderer.core.off(
-            event as ZRElementEventName,
-            unwrapEventHandler(handler)
-        );
-    });
+    emitRemoveListener = streamRequest<[string, ZRElementEventHandler]>();
 
-    setAttribute(name: string, value: string) {
-        super.setAttribute(name, value);
-
-        const key = toCamelCase(name);
-
-        if (key in Object.getPrototypeOf(this)) return;
-
-        this[key] = name === value || value;
+    removeEventListener(event: string, handler: EventListener) {
+        return this.emitRemoveListener(event, unwrapEventHandler(handler));
     }
 }

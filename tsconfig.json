@@ -7,7 +7,7 @@
         "useDefineForClassFields": true,
         "jsx": "react-jsx",
         "jsxImportSource": "dom-renderer",
-        "lib": ["ESNext", "DOM"],
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "skipLibCheck": true,
         "declaration": true,
         "sourceMap": true,
