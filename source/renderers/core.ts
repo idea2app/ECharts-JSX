@@ -54,6 +54,8 @@ export abstract class EChartsElement
     }
 
     connectedCallback() {
+        if (this.#core) return;
+
         super.connectedCallback();
 
         this.style.display = 'block';
@@ -67,6 +69,7 @@ export abstract class EChartsElement
         globalThis.removeEventListener?.('resize', this.handleResize);
 
         this.#core?.dispose();
+        this.#core = undefined;
     }
 
     #init() {

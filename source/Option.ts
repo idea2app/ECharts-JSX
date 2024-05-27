@@ -39,6 +39,8 @@ export abstract class ECOptionElement
     #renderer?: EChartsElement;
 
     connectedCallback() {
+        if (this.#renderer) return;
+
         super.connectedCallback();
 
         if (!this.attributes[0]) this.updateOption();

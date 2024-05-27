@@ -9,9 +9,11 @@ import '../../source/charts/pie';
  */
 export const PieChart = () => (
     <ec-svg-renderer style={{ height: '60vh' }}>
-        <ec-title subtext="Fake Data" left="center">
-            Referer of a Website
-        </ec-title>
+        <ec-title
+            text="Referer of a Website"
+            subtext="Fake Data"
+            left="center"
+        />
         <ec-legend orient="vertical" left="left" />
 
         <ec-tooltip trigger="item" />

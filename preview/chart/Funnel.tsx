@@ -9,9 +9,8 @@ import '../../source/charts/funnel';
  */
 export const FunnelChart = () => (
     <ec-svg-renderer style={{ height: '60vh' }}>
-        <ec-title subtext="Funnel Example" left="center">
-            Funnel
-        </ec-title>
+        <ec-title text="Funnel" subtext="Funnel Example" left="center" />
+
         <ec-legend orient="vertical" left="left" />
 
         <ec-tooltip trigger="item" />
