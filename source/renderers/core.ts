@@ -1,4 +1,9 @@
-import { EChartsOption, ResizeOpts } from 'echarts';
+import {
+    EChartsInitOpts,
+    EChartsOption,
+    ResizeOpts,
+    SetOptionOpts
+} from 'echarts';
 import { ECharts, init } from 'echarts/core';
 import { ECBasicOption } from 'echarts/types/dist/shared';
 import { debounce } from 'lodash';
@@ -22,7 +27,8 @@ export interface EChartsElementProps
     extends ECBasicOption,
         EChartsElementEventHandler {
     theme?: Parameters<typeof init>[1];
-    initOptions?: Omit<Parameters<typeof init>[2], 'renderer'>;
+    initOptions?: Omit<EChartsInitOpts, 'renderer'>;
+    setOptions?: SetOptionOpts;
     resizeOptions?: ResizeOpts;
 }
 
@@ -38,7 +44,7 @@ export abstract class EChartsElement
     get renderer() {
         const [_, type] = this.tagName.toLowerCase().split('-');
 
-        return type;
+        return type as EChartsInitOpts['renderer'];
     }
 
     get options() {
@@ -73,7 +79,8 @@ export abstract class EChartsElement
     }
 
     #init() {
-        var { theme, initOptions, ...props } = this.toJSON();
+        var { theme, initOptions, setOptions, ...props } =
+            this.toJSON() as EChartsElementProps;
 
         this.#core = init(
             this.shadowRoot.firstElementChild as HTMLDivElement,
@@ -81,11 +88,15 @@ export abstract class EChartsElement
             { ...initOptions, renderer: this.renderer }
         );
         this.#coreDefer.resolve();
-
+        // @ts-ignore
         this.setOption({ grid: {}, ...props });
 
         this.processStream(this.setOption.stream, (data: EChartsOption) => {
-            this.#core.setOption(data, false, true);
+            this.#core.setOption(data, {
+                notMerge: false,
+                lazyUpdate: true,
+                ...setOptions
+            });
         });
         this.processStream(
             this.removeEventListener.stream,
