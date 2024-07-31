@@ -1,5 +1,5 @@
 import { EChartsOption } from 'echarts';
-import { CustomElement, toCamelCase } from 'web-utility';
+import { CustomElement, toCamelCase, uniqueID } from 'web-utility';
 
 import { EChartsElement } from './renderers/core';
 import { ProxyElement } from './Proxy';
@@ -14,6 +14,8 @@ export abstract class ECOptionElement
     extends ProxyElement<EChartsOption>
     implements CustomElement
 {
+    #id = uniqueID();
+
     get chartTagName() {
         return toCamelCase(this.tagName.replace(/^ec-/i, '').toLowerCase());
     }
@@ -82,7 +84,7 @@ export abstract class ECOptionElement
 
         const option = (
             this.isSeries
-                ? { series: [{ ...data, type: this.chartName }] }
+                ? { series: [{ id: this.#id, ...data, type: this.chartName }] }
                 : { [this.chartTagName]: { ...data, formatter } }
         ) as EChartsOption;
 
