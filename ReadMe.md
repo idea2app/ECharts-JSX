@@ -10,15 +10,15 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3] & [Web compone
 
 ## Features
 
--   [x] All kinds of options & event handlers can be write in **JSX syntax**
--   [x] **Tree shaking** supported based on ECMAScript 6+ modules
+- [x] All kinds of options & event handlers can be write in **JSX syntax**
+- [x] **Tree shaking** supported based on ECMAScript 6+ modules
 
 ## Versions
 
-| SemVer |  branch  |    status    | component API  |
-| :----: | :------: | :----------: | :------------: |
-| `>=1`  |  `main`  | ✅developing | Web components |
-|  `<1`  | `master` | ❌deprecated |     React      |
+| SemVer |  branch  |    status    | component API  | ECharts version |
+| :----: | :------: | :----------: | :------------: | :-------------: |
+| `>=1`  |  `main`  | ✅developing | Web components |      `>=5`      |
+|  `<1`  | `master` | ❌deprecated |     React      |      `5.x`      |
 
 ## Installation
 
@@ -32,13 +32,9 @@ npm i echarts-jsx
 
 Any kinds of Render engines that you like can be used to render ECharts JSX tags.
 
-#### React 19+
+#### React
 
-Old versions have a property bug of Custom elements: https://github.com/facebook/react/issues/11347
-
-```shell
-npm i react@^19 react-dom@^19
-```
+React has a property bug of Custom elements, which hasn't been fixed totally: https://github.com/facebook/react/issues/29037#issuecomment-2525290829
 
 #### Preact
 
