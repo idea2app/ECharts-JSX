@@ -12,11 +12,20 @@ export class ECPolarComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-polar', ECPolarComponent);
 
+export type ECPolarComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['polar']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-polar': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['polar']>;
+            'ec-polar': ECPolarComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-polar': ECPolarComponentProps;
+            }
         }
     }
 }

@@ -11,10 +11,19 @@ export class ECFunnelChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-funnel-chart', ECFunnelChart);
 
+export type ECFunnelChartProps = JsxProps<ECOptionElement> & FunnelSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-funnel-chart': JsxProps<ECOptionElement> & FunnelSeriesOption;
+            'ec-funnel-chart': ECFunnelChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-funnel-chart': ECFunnelChartProps;
+            }
         }
     }
 }

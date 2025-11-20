@@ -11,10 +11,19 @@ export class ECGaugeChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-gauge-chart', ECGaugeChart);
 
+export type ECGaugeChartProps = JsxProps<ECOptionElement> & GaugeSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-gauge-chart': JsxProps<ECOptionElement> & GaugeSeriesOption;
+            'ec-gauge-chart': ECGaugeChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-gauge-chart': ECGaugeChartProps;
+            }
         }
     }
 }

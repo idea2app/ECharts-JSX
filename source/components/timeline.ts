@@ -12,11 +12,20 @@ export class ECTimelineComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-timeline', ECTimelineComponent);
 
+export type ECTimelineComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['timeline']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-timeline': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['timeline']>;
+            'ec-timeline': ECTimelineComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-timeline': ECTimelineComponentProps;
+            }
         }
     }
 }

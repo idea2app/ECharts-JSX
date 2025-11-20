@@ -12,11 +12,20 @@ export class ECTitleComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-title', ECTitleComponent);
 
+export type ECTitleComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['title']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-title': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['title']>;
+            'ec-title': ECTitleComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-title': ECTitleComponentProps;
+            }
         }
     }
 }

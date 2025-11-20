@@ -11,10 +11,20 @@ export class ECHeatmapChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-heatmap-chart', ECHeatmapChart);
 
+export type ECHeatmapChartProps = JsxProps<ECOptionElement> &
+    HeatmapSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-heatmap-chart': JsxProps<ECOptionElement> & HeatmapSeriesOption;
+            'ec-heatmap-chart': ECHeatmapChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-heatmap-chart': ECHeatmapChartProps;
+            }
         }
     }
 }

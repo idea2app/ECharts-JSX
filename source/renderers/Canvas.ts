@@ -11,16 +11,25 @@ use(CanvasRenderer);
 
 export class ECCanvasRenderer extends EChartsElement {}
 
-customElements.define('ec-canvas-renderer', ECCanvasRenderer);
+globalThis.customElements?.define('ec-canvas-renderer', ECCanvasRenderer);
+
+export type ECCanvasRendererProps = Omit<
+    JsxProps<EChartsElement>,
+    keyof EChartsElementEventHandler
+> &
+    EChartsElementProps;
 
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-canvas-renderer': Omit<
-                JsxProps<EChartsElement>,
-                keyof EChartsElementEventHandler
-            > &
-                EChartsElementProps;
+            'ec-canvas-renderer': ECCanvasRendererProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-canvas-renderer': ECCanvasRendererProps;
+            }
         }
     }
 }

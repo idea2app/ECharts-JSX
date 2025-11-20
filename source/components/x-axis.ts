@@ -12,11 +12,20 @@ export class ECXAxisComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-x-axis', ECXAxisComponent);
 
+export type ECXAxisComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['xAxis']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-x-axis': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['xAxis']>;
+            'ec-x-axis': ECXAxisComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-x-axis': ECXAxisComponentProps;
+            }
         }
     }
 }

@@ -8,11 +8,20 @@ export class ECRadiusAxisComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-radius-axis', ECRadiusAxisComponent);
 
+export type ECRadiusAxisComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['radiusAxis']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-radius-axis': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['radiusAxis']>;
+            'ec-radius-axis': ECRadiusAxisComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-radius-axis': ECRadiusAxisComponentProps;
+            }
         }
     }
 }

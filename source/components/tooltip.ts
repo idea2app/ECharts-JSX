@@ -12,11 +12,20 @@ export class ECTooltipComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-tooltip', ECTooltipComponent);
 
+export type ECTooltipComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['tooltip']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-tooltip': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['tooltip']>;
+            'ec-tooltip': ECTooltipComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-tooltip': ECTooltipComponentProps;
+            }
         }
     }
 }

@@ -11,10 +11,19 @@ export class ECMapChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-map-chart', ECMapChart);
 
+export type ECMapChartProps = JsxProps<ECOptionElement> & MapSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-map-chart': JsxProps<ECOptionElement> & MapSeriesOption;
+            'ec-map-chart': ECMapChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-map-chart': ECMapChartProps;
+            }
         }
     }
 }

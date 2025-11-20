@@ -11,10 +11,20 @@ export class ECScatterChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-scatter-chart', ECScatterChart);
 
+export type ECScatterChartProps = JsxProps<ECOptionElement> &
+    ScatterSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-scatter-chart': JsxProps<ECOptionElement> & ScatterSeriesOption;
+            'ec-scatter-chart': ECScatterChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-scatter-chart': ECScatterChartProps;
+            }
         }
     }
 }

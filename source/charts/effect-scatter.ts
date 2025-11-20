@@ -14,11 +14,20 @@ globalThis.customElements?.define(
     ECEffectScatterChart
 );
 
+export type ECEffectScatterChartProps = JsxProps<ECOptionElement> &
+    EffectScatterSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-effect-scatter-chart': JsxProps<ECOptionElement> &
-                EffectScatterSeriesOption;
+            'ec-effect-scatter-chart': ECEffectScatterChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-effect-scatter-chart': ECEffectScatterChartProps;
+            }
         }
     }
 }

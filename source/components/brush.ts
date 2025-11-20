@@ -12,11 +12,20 @@ export class ECBrushComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-brush', ECBrushComponent);
 
+export type ECBrushComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['brush']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-brush': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['brush']>;
+            'ec-brush': ECBrushComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-brush': ECBrushComponentProps;
+            }
         }
     }
 }

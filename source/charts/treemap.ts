@@ -11,10 +11,20 @@ export class ECTreemapChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-treemap-chart', ECTreemapChart);
 
+export type ECTreemapChartProps = JsxProps<ECOptionElement> &
+    TreemapSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-treemap-chart': JsxProps<ECOptionElement> & TreemapSeriesOption;
+            'ec-treemap-chart': ECTreemapChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-treemap-chart': ECTreemapChartProps;
+            }
         }
     }
 }

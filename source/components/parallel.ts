@@ -12,11 +12,20 @@ export class ECParallelComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-parallel', ECParallelComponent);
 
+export type ECParallelComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['parallel']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-parallel': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['parallel']>;
+            'ec-parallel': ECParallelComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-parallel': ECParallelComponentProps;
+            }
         }
     }
 }

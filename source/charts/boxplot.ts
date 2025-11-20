@@ -11,10 +11,20 @@ export class ECBoxplotChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-boxplot-chart', ECBoxplotChart);
 
+export type ECBoxplotChartProps = JsxProps<ECOptionElement> &
+    BoxplotSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-boxplot-chart': JsxProps<ECOptionElement> & BoxplotSeriesOption;
+            'ec-boxplot-chart': ECBoxplotChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-boxplot-chart': ECBoxplotChartProps;
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ export * from './components/y-axis';
 export * from './components/angle-axis';
 export * from './components/radius-axis';
 export * from './components/radar';
+export * from './components/matrix';
 
 export * from './charts/line';
 export * from './charts/bar';
@@ -49,4 +50,5 @@ export * from './charts/heatmap';
 export * from './charts/pictorial-bar';
 export * from './charts/theme-river';
 export * from './charts/sunburst';
+export * from './charts/chord';
 export * from './charts/custom';
