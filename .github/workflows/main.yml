@@ -30,11 +30,14 @@ jobs:
               run: pnpm i --frozen-lockfile
 
             - name: Build & Publish
-              if: env.IS_RELEASE == 'true'
-              run: npm publish --access public --provenance
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
+              run: |
+                  if [ $IS_RELEASE = "true" ]; then
+                      npm publish --access public --provenance
+                  else
+                      pnpm build
+                  fi
             - name: Update document
               if: env.IS_RELEASE == 'true'
               uses: peaceiris/actions-gh-pages@v4
