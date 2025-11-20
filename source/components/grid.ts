@@ -12,11 +12,20 @@ export class ECGridComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-grid', ECGridComponent);
 
+export type ECGridComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['grid']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-grid': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['grid']>;
+            'ec-grid': ECGridComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-grid': ECGridComponentProps;
+            }
         }
     }
 }

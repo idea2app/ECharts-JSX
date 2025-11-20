@@ -12,11 +12,19 @@ export class ECAxisPointerComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-axis-pointer', ECAxisPointerComponent);
 
+export type ECAxisPointerComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['axisPointer']>;
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-axis-pointer': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['axisPointer']>;
+            'ec-axis-pointer': ECAxisPointerComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-axis-pointer': ECAxisPointerComponentProps;
+            }
         }
     }
 }

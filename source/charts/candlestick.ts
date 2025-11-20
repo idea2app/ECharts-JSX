@@ -11,11 +11,20 @@ export class ECCandlestickChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-candlestick-chart', ECCandlestickChart);
 
+export type ECCandlestickChartProps = JsxProps<ECOptionElement> &
+    CandlestickSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-candlestick-chart': JsxProps<ECOptionElement> &
-                CandlestickSeriesOption;
+            'ec-candlestick-chart': ECCandlestickChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-candlestick-chart': ECCandlestickChartProps;
+            }
         }
     }
 }

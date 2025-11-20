@@ -11,11 +11,20 @@ export class ECParallelChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-parallel-chart', ECParallelChart);
 
+export type ECParallelChartProps = JsxProps<ECOptionElement> &
+    ParallelSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-parallel-chart': JsxProps<ECOptionElement> &
-                ParallelSeriesOption;
+            'ec-parallel-chart': ECParallelChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-parallel-chart': ECParallelChartProps;
+            }
         }
     }
 }

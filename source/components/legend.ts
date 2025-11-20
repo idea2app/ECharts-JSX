@@ -12,11 +12,20 @@ export class ECLegendComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-legend', ECLegendComponent);
 
+export type ECLegendComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['legend']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-legend': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['legend']>;
+            'ec-legend': ECLegendComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-legend': ECLegendComponentProps;
+            }
         }
     }
 }

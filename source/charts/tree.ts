@@ -11,10 +11,19 @@ export class ECTreeChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-tree-chart', ECTreeChart);
 
+export type ECTreeChartProps = JsxProps<ECOptionElement> & TreeSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-tree-chart': JsxProps<ECOptionElement> & TreeSeriesOption;
+            'ec-tree-chart': ECTreeChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-tree-chart': ECTreeChartProps;
+            }
         }
     }
 }

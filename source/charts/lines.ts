@@ -11,10 +11,19 @@ export class ECLinesChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-lines-chart', ECLinesChart);
 
+export type ECLinesChartProps = JsxProps<ECOptionElement> & LinesSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-lines-chart': JsxProps<ECOptionElement> & LinesSeriesOption;
+            'ec-lines-chart': ECLinesChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-lines-chart': ECLinesChartProps;
+            }
         }
     }
 }

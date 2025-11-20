@@ -12,11 +12,20 @@ export class ECSingleAxisComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-single-axis', ECSingleAxisComponent);
 
+export type ECSingleAxisComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['singleAxis']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-single-axis': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['singleAxis']>;
+            'ec-single-axis': ECSingleAxisComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-single-axis': ECSingleAxisComponentProps;
+            }
         }
     }
 }

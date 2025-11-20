@@ -8,11 +8,20 @@ export class ECAngleAxisComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-angle-axis', ECAngleAxisComponent);
 
+export type ECAngleAxisComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['angleAxis']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-angle-axis': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['angleAxis']>;
+            'ec-angle-axis': ECAngleAxisComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-angle-axis': ECAngleAxisComponentProps;
+            }
         }
     }
 }

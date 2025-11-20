@@ -12,11 +12,20 @@ export class ECToolboxComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-toolbox', ECToolboxComponent);
 
+export type ECToolboxComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['toolbox']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-toolbox': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['toolbox']>;
+            'ec-toolbox': ECToolboxComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-toolbox': ECToolboxComponentProps;
+            }
         }
     }
 }

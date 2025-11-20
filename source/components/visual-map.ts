@@ -12,11 +12,20 @@ export class ECVisualMapComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-visual-map', ECVisualMapComponent);
 
+export type ECVisualMapComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['visualMap']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-visual-map': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['visualMap']>;
+            'ec-visual-map': ECVisualMapComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-visual-map': ECVisualMapComponentProps;
+            }
         }
     }
 }

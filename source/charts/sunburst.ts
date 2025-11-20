@@ -11,11 +11,20 @@ export class ECSunburstChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-sunburst-chart', ECSunburstChart);
 
+export type ECSunburstChartProps = JsxProps<ECOptionElement> &
+    SunburstSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-sunburst-chart': JsxProps<ECOptionElement> &
-                SunburstSeriesOption;
+            'ec-sunburst-chart': ECSunburstChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-sunburst-chart': ECSunburstChartProps;
+            }
         }
     }
 }

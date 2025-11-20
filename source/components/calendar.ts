@@ -12,11 +12,20 @@ export class ECCalendarComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-calendar', ECCalendarComponent);
 
+export type ECCalendarComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['calendar']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-calendar': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['calendar']>;
+            'ec-calendar': ECCalendarComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-calendar': ECCalendarComponentProps;
+            }
         }
     }
 }

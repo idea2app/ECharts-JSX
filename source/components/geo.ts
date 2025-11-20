@@ -12,11 +12,20 @@ export class ECGeoComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-geo', ECGeoComponent);
 
+export type ECGeoComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['geo']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-geo': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['geo']>;
+            'ec-geo': ECGeoComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-geo': ECGeoComponentProps;
+            }
         }
     }
 }

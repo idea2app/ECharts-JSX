@@ -12,11 +12,20 @@ export class ECGraphicComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-graphic', ECGraphicComponent);
 
+export type ECGraphicComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['graphic']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-graphic': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['graphic']>;
+            'ec-graphic': ECGraphicComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-graphic': ECGraphicComponentProps;
+            }
         }
     }
 }

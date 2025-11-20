@@ -11,11 +11,20 @@ export class ECThemeRiverChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-theme-river-chart', ECThemeRiverChart);
 
+export type ECThemeRiverChartProps = JsxProps<ECOptionElement> &
+    ThemeRiverSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-theme-river-chart': JsxProps<ECOptionElement> &
-                ThemeRiverSeriesOption;
+            'ec-theme-river-chart': ECThemeRiverChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-theme-river-chart': ECThemeRiverChartProps;
+            }
         }
     }
 }

@@ -11,10 +11,19 @@ export class ECRadarChart extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-radar-chart', ECRadarChart);
 
+export type ECRadarChartProps = JsxProps<ECOptionElement> & RadarSeriesOption;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-radar-chart': JsxProps<ECOptionElement> & RadarSeriesOption;
+            'ec-radar-chart': ECRadarChartProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-radar-chart': ECRadarChartProps;
+            }
         }
     }
 }

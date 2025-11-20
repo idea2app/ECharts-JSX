@@ -12,11 +12,20 @@ export class ECDataZoomComponent extends ECOptionElement {}
 
 globalThis.customElements?.define('ec-data-zoom', ECDataZoomComponent);
 
+export type ECDataZoomComponentProps = JsxProps<ECOptionElement> &
+    PickSingle<EChartsOption['dataZoom']>;
+
 declare global {
     namespace JSX {
         interface IntrinsicElements {
-            'ec-data-zoom': JsxProps<ECOptionElement> &
-                PickSingle<EChartsOption['dataZoom']>;
+            'ec-data-zoom': ECDataZoomComponentProps;
+        }
+    }
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements {
+                'ec-data-zoom': ECDataZoomComponentProps;
+            }
         }
     }
 }
