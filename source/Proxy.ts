@@ -50,9 +50,6 @@ export abstract class ProxyElement<T extends object>
         this.#data[key] = value;
 
         switch (typeof value) {
-            case 'object':
-                if (!value) this.removeAttribute(name);
-                break;
             case 'boolean':
                 if (value) super.setAttribute(name, name + '');
                 else super.removeAttribute(name);
@@ -67,9 +64,9 @@ export abstract class ProxyElement<T extends object>
                 if (value != null)
                     super.setAttribute(
                         name,
-                        typeof value === 'string'
-                            ? value
-                            : JSON.stringify(value)
+                        typeof value === 'object'
+                            ? JSON.stringify(value)
+                            : value
                     );
                 else if (
                     EventKeyPattern.test(key) &&
