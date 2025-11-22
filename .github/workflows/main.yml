@@ -2,10 +2,9 @@ name: CI & CD
 on:
     push:
         tags:
-            - v*
+            - v0.*
 jobs:
     Build-and-Publish:
-        if: github.ref == 'refs/heads/master'
         runs-on: ubuntu-latest
         permissions:
             contents: write
