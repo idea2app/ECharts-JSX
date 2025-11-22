@@ -2,9 +2,9 @@ name: CI & CD
 on:
     push:
         branches-ignore:
-            - main
-        tags:
-            - v*
+            - master
+        tags-ignore:
+            - v0.*
 env:
     IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
 

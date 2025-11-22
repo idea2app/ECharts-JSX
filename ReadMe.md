@@ -15,10 +15,10 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3] & [Web compone
 
 ## Versions
 
-| SemVer |  branch  |    status    | component API  | ECharts version |
-| :----: | :------: | :----------: | :------------: | :-------------: |
-| `>=1`  |  `main`  | ✅developing | Web components |      `>=5`      |
-|  `<1`  | `master` | ❌deprecated |     React      |      `5.x`      |
+| SemVer |  branch  |    status     | component API  | ECharts version |
+| :----: | :------: | :-----------: | :------------: | :-------------: |
+| `>=1`  |  `main`  | ✅developing  | Web components |      `>=5`      |
+|  `<1`  | `master` | 🚧maintaining |     React      |      `>=5`      |
 
 ## Installation
 
@@ -35,6 +35,8 @@ Any kinds of Render engines that you like can be used to render ECharts JSX tags
 #### React
 
 React has a property bug of Custom elements, which hasn't been fixed totally: https://github.com/facebook/react/issues/29037#issuecomment-2525290829
+
+So use Preact or [ECharts 0.x (React edition)][9] instead.
 
 #### Preact
 
@@ -83,9 +85,9 @@ and write chart codes as this demo: https://idea2app.github.io/Vue-Prime-ts/#/ch
 
 ## Simple example
 
-Origin: [ECharts official example][9]
+Origin: [ECharts official example][10]
 
-[![Edit ECharts-JSX-1.0-demo](https://codesandbox.io/static/img/play-codesandbox.svg)][10]
+[![Edit ECharts-JSX-1.0-demo](https://codesandbox.io/static/img/play-codesandbox.svg)][11]
 
 ```tsx
 import { render } from 'react-dom';
@@ -139,6 +141,7 @@ render(
 [5]: https://libraries.io/npm/echarts-jsx
 [6]: https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml
 [7]: https://github.com/ecomfe/awesome-echarts?tab=readme-ov-file#web-components
-[8]: https://nodei.co/npm/echarts-jsx/
-[9]: https://echarts.apache.org/handbook/en/get-started/
-[10]: https://codesandbox.io/p/devbox/echarts-jsx-1-0-demo-h2dz8t?file=%2Fsrc%2FBar.tsx&embed=1
+[8]: https://npm.im/echarts-jsx/
+[9]: https://github.com/idea2app/ECharts-JSX/tree/master
+[10]: https://echarts.apache.org/handbook/en/get-started/
+[11]: https://codesandbox.io/p/devbox/echarts-jsx-1-0-demo-h2dz8t?file=%2Fsrc%2FBar.tsx&embed=1
