@@ -1,12 +1,4 @@
 import type { RegisteredSeriesOption } from 'echarts/types/dist/shared';
-import type {
-    BoxplotSeriesOption,
-    CustomSeriesOption,
-    EffectScatterSeriesOption,
-    LinesSeriesOption,
-    MapSeriesOption,
-    PictorialBarSeriesOption
-} from 'echarts/charts';
 
 import { EC } from '../charts';
 import {
@@ -124,7 +116,7 @@ CandlestickSeries.loadModule = async () => {
     return [CandlestickChart, UniversalTransition];
 };
 
-export type BoxplotSeriesProps = SeriesProps<BoxplotSeriesOption>;
+export type BoxplotSeriesProps = SeriesProps<RegisteredSeriesOption['boxplot']>;
 /**
  * @example
  * ```tsx
@@ -137,20 +129,9 @@ BoxplotSeries.optionOf = seriesOptionCreator('boxplot');
 
 BoxplotSeries.loadModule = chartLoader(['BoxplotChart']);
 
-export type CustomSeriesProps = SeriesProps<CustomSeriesOption>;
-/**
- * @example
- * ```tsx
- * <CustomSeries renderItem={(params, api) => ({ type: 'circle' })} />
- * ```
- */
-export const CustomSeries: EC<CustomSeriesProps> = () => <></>;
-
-CustomSeries.optionOf = seriesOptionCreator('custom');
-
-CustomSeries.loadModule = chartLoader(['CustomChart']);
-
-export type EffectScatterSeriesProps = SeriesProps<EffectScatterSeriesOption>;
+export type EffectScatterSeriesProps = SeriesProps<
+    RegisteredSeriesOption['effectScatter']
+>;
 /**
  * @example
  * ```tsx
@@ -163,33 +144,9 @@ EffectScatterSeries.optionOf = seriesOptionCreator('effectScatter');
 
 EffectScatterSeries.loadModule = chartLoader(['EffectScatterChart']);
 
-export type LinesSeriesProps = SeriesProps<LinesSeriesOption>;
-/**
- * @example
- * ```tsx
- * <LinesSeries data={[{ coords: [[0, 0], [100, 100]] }]} />
- * ```
- */
-export const LinesSeries: EC<LinesSeriesProps> = () => <></>;
-
-LinesSeries.optionOf = seriesOptionCreator('lines');
-
-LinesSeries.loadModule = chartLoader(['LinesChart']);
-
-export type MapSeriesProps = SeriesProps<MapSeriesOption>;
-/**
- * @example
- * ```tsx
- * <MapSeries map="china" data={[{ name: 'Beijing', value: 100 }]} />
- * ```
- */
-export const MapSeries: EC<MapSeriesProps> = () => <></>;
-
-MapSeries.optionOf = seriesOptionCreator('map');
-
-MapSeries.loadModule = chartLoader(['MapChart']);
-
-export type PictorialBarSeriesProps = SeriesProps<PictorialBarSeriesOption>;
+export type PictorialBarSeriesProps = SeriesProps<
+    RegisteredSeriesOption['pictorialBar']
+>;
 /**
  * @example
  * ```tsx

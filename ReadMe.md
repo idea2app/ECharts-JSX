@@ -8,33 +8,40 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
 
 [![NPM](https://nodei.co/npm/echarts-jsx.png?downloads=true&downloadRank=true&stars=true)][7]
 
+## Versions
+
+| SemVer |  branch  |    status     | component API  | ECharts version |
+| :----: | :------: | :-----------: | :------------: | :-------------: |
+| `>=1`  |  `main`  | ✅developing  | Web components |      `>=5`      |
+|  `<1`  | `master` | 🚧Maintaining |     React      |      `>=5`      |
+
 ## Features
 
--   [x] All kinds of options & event handlers can be write in **JSX syntax**
-    -   [x] Parallel chart
-    -   [x] Line chart
-    -   [x] Scatter chart
-    -   [x] Bar chart
-    -   [x] Candle Stick chart
-    -   [x] Boxplot chart
-    -   [x] Custom chart
-    -   [x] Effect Scatter chart
-    -   [x] Lines chart
-    -   [x] Map chart
-    -   [x] Pictorial Bar chart
-    -   [x] Chord chart
-    -   [x] Pie chart
-    -   [x] Radar chart
-    -   [x] Sunburst chart
-    -   [x] Gauge chart
-    -   [x] Tree chart
-    -   [x] Tree Map chart
-    -   [x] Sankey chart
-    -   [x] Heat Map chart
-    -   [x] Graph chart
-    -   [x] Funnel chart
-    -   [x] Theme River chart
--   [x] Async-load required modules automatically
+- [x] All kinds of options & event handlers can be write in **JSX syntax**
+    - [x] Parallel chart
+    - [x] Line chart
+    - [x] Scatter chart
+    - [x] Bar chart
+    - [x] Candle Stick chart
+    - [x] Boxplot chart
+    - [x] Custom chart
+    - [x] Effect Scatter chart
+    - [x] Lines chart
+    - [x] Map chart
+    - [x] Pictorial Bar chart
+    - [x] Chord chart
+    - [x] Pie chart
+    - [x] Radar chart
+    - [x] Sunburst chart
+    - [x] Gauge chart
+    - [x] Tree chart
+    - [x] Tree Map chart
+    - [x] Sankey chart
+    - [x] Heat Map chart
+    - [x] Graph chart
+    - [x] Funnel chart
+    - [x] Theme River chart
+- [x] Async-load required modules automatically
 
 ## Quick start
 
@@ -109,6 +116,6 @@ render(
 [4]: https://libraries.io/npm/echarts-jsx
 [5]: https://github.com/idea2app/ECharts-JSX/actions/workflows/main.yml
 [6]: https://github.com/ecomfe/awesome-echarts
-[7]: https://nodei.co/npm/echarts-jsx/
+[7]: https://npm.im/echarts-jsx/
 [8]: https://echarts.apache.org/handbook/en/get-started/
 [9]: https://codesandbox.io/s/echarts-jsx-demo-bouwsf?autoresize=1&fontsize=14&module=%2Fsrc%2FBar.tsx&theme=dark
