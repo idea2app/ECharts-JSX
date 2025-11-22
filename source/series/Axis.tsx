@@ -1,4 +1,12 @@
 import type { RegisteredSeriesOption } from 'echarts/types/dist/shared';
+import type {
+    BoxplotSeriesOption,
+    CustomSeriesOption,
+    EffectScatterSeriesOption,
+    LinesSeriesOption,
+    MapSeriesOption,
+    PictorialBarSeriesOption
+} from 'echarts/charts';
 
 import { EC } from '../charts';
 import {
@@ -115,3 +123,81 @@ CandlestickSeries.loadModule = async () => {
     ]);
     return [CandlestickChart, UniversalTransition];
 };
+
+export type BoxplotSeriesProps = SeriesProps<BoxplotSeriesOption>;
+/**
+ * @example
+ * ```tsx
+ * <BoxplotSeries data={[[850, 740, 900, 1070, 930]]} />
+ * ```
+ */
+export const BoxplotSeries: EC<BoxplotSeriesProps> = () => <></>;
+
+BoxplotSeries.optionOf = seriesOptionCreator('boxplot');
+
+BoxplotSeries.loadModule = chartLoader(['BoxplotChart']);
+
+export type CustomSeriesProps = SeriesProps<CustomSeriesOption>;
+/**
+ * @example
+ * ```tsx
+ * <CustomSeries renderItem={(params, api) => ({ type: 'circle' })} />
+ * ```
+ */
+export const CustomSeries: EC<CustomSeriesProps> = () => <></>;
+
+CustomSeries.optionOf = seriesOptionCreator('custom');
+
+CustomSeries.loadModule = chartLoader(['CustomChart']);
+
+export type EffectScatterSeriesProps = SeriesProps<EffectScatterSeriesOption>;
+/**
+ * @example
+ * ```tsx
+ * <EffectScatterSeries data={[[10, 20], [20, 30]]} />
+ * ```
+ */
+export const EffectScatterSeries: EC<EffectScatterSeriesProps> = () => <></>;
+
+EffectScatterSeries.optionOf = seriesOptionCreator('effectScatter');
+
+EffectScatterSeries.loadModule = chartLoader(['EffectScatterChart']);
+
+export type LinesSeriesProps = SeriesProps<LinesSeriesOption>;
+/**
+ * @example
+ * ```tsx
+ * <LinesSeries data={[{ coords: [[0, 0], [100, 100]] }]} />
+ * ```
+ */
+export const LinesSeries: EC<LinesSeriesProps> = () => <></>;
+
+LinesSeries.optionOf = seriesOptionCreator('lines');
+
+LinesSeries.loadModule = chartLoader(['LinesChart']);
+
+export type MapSeriesProps = SeriesProps<MapSeriesOption>;
+/**
+ * @example
+ * ```tsx
+ * <MapSeries map="china" data={[{ name: 'Beijing', value: 100 }]} />
+ * ```
+ */
+export const MapSeries: EC<MapSeriesProps> = () => <></>;
+
+MapSeries.optionOf = seriesOptionCreator('map');
+
+MapSeries.loadModule = chartLoader(['MapChart']);
+
+export type PictorialBarSeriesProps = SeriesProps<PictorialBarSeriesOption>;
+/**
+ * @example
+ * ```tsx
+ * <PictorialBarSeries data={[10, 20, 30]} />
+ * ```
+ */
+export const PictorialBarSeries: EC<PictorialBarSeriesProps> = () => <></>;
+
+PictorialBarSeries.optionOf = seriesOptionCreator('pictorialBar');
+
+PictorialBarSeries.loadModule = chartLoader(['PictorialBarChart']);

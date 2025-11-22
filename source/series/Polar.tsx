@@ -1,13 +1,10 @@
 import type {
-    RegisteredSeriesOption,
-    RadarOption
+    RegisteredSeriesOption
 } from 'echarts/types/dist/shared';
 
 import { EC } from '../charts';
 import {
-    EventHandlerProps,
     SeriesProps,
-    optionCreator,
     seriesOptionCreator,
     chartLoader
 } from '../utility';
@@ -30,12 +27,6 @@ export const PieSeries: EC<PieSeriesProps> = () => <></>;
 PieSeries.optionOf = seriesOptionCreator('pie');
 
 PieSeries.loadModule = chartLoader(['PieChart']);
-
-export type RadarProps = EventHandlerProps & RadarOption;
-
-export const Radar: EC<RadarProps> = () => <></>;
-
-Radar.optionOf = optionCreator('radar');
 
 export type RadarSeriesProps = SeriesProps<RegisteredSeriesOption['radar']>;
 /**

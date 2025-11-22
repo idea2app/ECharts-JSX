@@ -2,7 +2,8 @@ import type {
     HeatmapSeriesOption,
     GraphSeriesOption,
     FunnelSeriesOption,
-    ThemeRiverSeriesOption
+    ThemeRiverSeriesOption,
+    ChordSeriesOption
 } from 'echarts/charts';
 
 import { EC } from '../charts';
@@ -50,3 +51,19 @@ export const ThemeRiverSeries: EC<ThemeRiverSeriesProps> = () => <></>;
 ThemeRiverSeries.optionOf = seriesOptionCreator('themeRiver');
 
 ThemeRiverSeries.loadModule = chartLoader(['ThemeRiverChart']);
+
+export type ChordSeriesProps = SeriesProps<ChordSeriesOption>;
+/**
+ * @example
+ * ```tsx
+ * <ChordSeries
+ *     data={[{ name: 'node1' }, { name: 'node2' }]}
+ *     links={[{ source: 0, target: 1, value: 10 }]}
+ * />
+ * ```
+ */
+export const ChordSeries: EC<ChordSeriesProps> = () => <></>;
+
+ChordSeries.optionOf = seriesOptionCreator('chord');
+
+ChordSeries.loadModule = chartLoader(['ChordChart']);
