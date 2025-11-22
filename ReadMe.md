@@ -16,6 +16,13 @@ A real [JSX][1] wrapper for [ECharts][2] based on [TypeScript][3]
     -   [x] Scatter chart
     -   [x] Bar chart
     -   [x] Candle Stick chart
+    -   [x] Boxplot chart
+    -   [x] Custom chart
+    -   [x] Effect Scatter chart
+    -   [x] Lines chart
+    -   [x] Map chart
+    -   [x] Pictorial Bar chart
+    -   [x] Chord chart
     -   [x] Pie chart
     -   [x] Radar chart
     -   [x] Sunburst chart
