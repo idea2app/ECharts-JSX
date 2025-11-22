@@ -1,6 +1,6 @@
 {
     "name": "echarts-jsx",
-    "version": "0.5.4",
+    "version": "0.6.0",
     "license": "LGPL-3.0",
     "author": "shiy2008@gmail.com",
     "description": "A real JSX wrapper for ECharts based on TypeScript",
@@ -25,25 +25,25 @@
     "module": "dist/index.js",
     "main": "dist/index.umd.js",
     "dependencies": {
-        "echarts": "^5.4.3",
+        "echarts": ">=5",
         "lodash": "^4.17.21",
-        "web-utility": "^4.1.3"
+        "web-utility": "^4.6.4"
     },
     "peerDependencies": {
         "react": ">=16"
     },
     "devDependencies": {
-        "@types/lodash": "^4.14.200",
-        "@types/react": "^18.2.34",
-        "husky": "^8.0.3",
-        "lint-staged": "^15.0.2",
+        "@types/lodash": "^4.17.21",
+        "@types/react": "^19.2.6",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
         "microbundle": "^0.15.1",
-        "open-cli": "^7.2.0",
-        "prettier": "^3.0.3",
-        "react": "^18.2.0",
-        "typedoc": "^0.25.3",
-        "typedoc-plugin-mdn-links": "^3.1.0",
-        "typescript": "~5.2.2"
+        "open-cli": "^8.0.0",
+        "prettier": "^3.6.2",
+        "react": "^19.2.0",
+        "typedoc": "^0.28.14",
+        "typedoc-plugin-mdn-links": "^5.0.10",
+        "typescript": "~5.9.3"
     },
     "prettier": {
         "singleQuote": true,
@@ -56,7 +56,7 @@
     },
     "browserslist": "> 0.5%, last 2 versions, not dead, IE 11",
     "scripts": {
-        "prepare": "husky install",
+        "prepare": "husky",
         "test": "lint-staged",
         "pack-dist": "rm -rf dist/  &&  microbundle --name EChartsJSX --jsx jsx --jsxImportSource react --globals react/jsx-runtime=jsx,echarts/core=echarts,web-utility=WebUtility",
         "pack-docs": "rm -rf docs/  &&  typedoc source/",

@@ -1,10 +1,20 @@
 import type {
+    AngleAxisComponentOption,
     AxisPointerComponentOption,
+    BrushComponentOption,
     CalendarComponentOption,
+    DataZoomComponentOption,
+    GeoComponentOption,
+    GraphicComponentOption,
     GridComponentOption,
     LegendComponentOption,
+    MatrixComponentOption,
     ParallelComponentOption,
+    PolarComponentOption,
+    RadarComponentOption,
+    RadiusAxisComponentOption,
     SingleAxisComponentOption,
+    TimelineComponentOption,
     TitleComponentOption,
     ToolboxComponentOption,
     TooltipComponentOption,
@@ -185,3 +195,133 @@ export const Calendar: EC<CalendarProps> = () => <></>;
 Calendar.optionOf = optionCreator('calendar');
 
 Calendar.loadModule = componentLoader(['CalendarComponent']);
+
+export type BrushProps = EventHandlerProps & BrushComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Brush toolbox={['rect', 'polygon', 'clear']} />
+ * ```
+ */
+export const Brush: EC<BrushProps> = () => <></>;
+
+Brush.optionOf = optionCreator('brush');
+
+Brush.loadModule = componentLoader(['BrushComponent']);
+
+export type DataZoomProps = EventHandlerProps & DataZoomComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <DataZoom type="slider" start={0} end={100} />
+ * ```
+ */
+export const DataZoom: EC<DataZoomProps> = () => <></>;
+
+DataZoom.optionOf = optionCreator('dataZoom');
+
+DataZoom.loadModule = componentLoader(['DataZoomComponent']);
+
+export type GeoProps = EventHandlerProps & GeoComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Geo map="china" />
+ * ```
+ */
+export const Geo: EC<GeoProps> = () => <></>;
+
+Geo.optionOf = optionCreator('geo');
+
+Geo.loadModule = componentLoader(['GeoComponent']);
+
+export type GraphicProps = EventHandlerProps & GraphicComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Graphic elements={[{ type: 'text', left: 'center', top: 'center' }]} />
+ * ```
+ */
+export const Graphic: EC<GraphicProps> = () => <></>;
+
+Graphic.optionOf = optionCreator('graphic');
+
+Graphic.loadModule = componentLoader(['GraphicComponent']);
+
+export type PolarProps = EventHandlerProps & PolarComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Polar />
+ * ```
+ */
+export const Polar: EC<PolarProps> = () => <></>;
+
+Polar.optionOf = optionCreator('polar');
+
+Polar.loadModule = componentLoader(['PolarComponent']);
+
+export type RadarProps = EventHandlerProps & RadarComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Radar indicator={[{ name: 'Sales' }, { name: 'Administration' }]} />
+ * ```
+ */
+export const Radar: EC<RadarProps> = () => <></>;
+
+Radar.optionOf = optionCreator('radar');
+
+Radar.loadModule = componentLoader(['RadarComponent']);
+
+export type AngleAxisProps = EventHandlerProps & AngleAxisComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <AngleAxis polarIndex={0} />
+ * ```
+ */
+export const AngleAxis: EC<AngleAxisProps> = () => <></>;
+
+AngleAxis.optionOf = optionCreator('angleAxis');
+
+AngleAxis.loadModule = componentLoader(['PolarComponent']);
+
+export type RadiusAxisProps = EventHandlerProps & RadiusAxisComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <RadiusAxis polarIndex={0} />
+ * ```
+ */
+export const RadiusAxis: EC<RadiusAxisProps> = () => <></>;
+
+RadiusAxis.optionOf = optionCreator('radiusAxis');
+
+RadiusAxis.loadModule = componentLoader(['PolarComponent']);
+
+export type TimelineProps = EventHandlerProps & TimelineComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Timeline data={['2002', '2003', '2004']} />
+ * ```
+ */
+export const Timeline: EC<TimelineProps> = () => <></>;
+
+Timeline.optionOf = optionCreator('timeline');
+
+Timeline.loadModule = componentLoader(['TimelineComponent']);
+
+export type MatrixProps = EventHandlerProps & MatrixComponentOption;
+/**
+ * @example
+ * ```tsx
+ * <Matrix />
+ * ```
+ */
+export const Matrix: EC<MatrixProps> = () => <></>;
+
+Matrix.optionOf = optionCreator('matrix');
+
+Matrix.loadModule = componentLoader(['MatrixComponent']);

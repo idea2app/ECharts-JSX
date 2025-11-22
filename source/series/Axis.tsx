@@ -115,3 +115,46 @@ CandlestickSeries.loadModule = async () => {
     ]);
     return [CandlestickChart, UniversalTransition];
 };
+
+export type BoxplotSeriesProps = SeriesProps<RegisteredSeriesOption['boxplot']>;
+/**
+ * @example
+ * ```tsx
+ * <BoxplotSeries data={[[850, 740, 900, 1070, 930]]} />
+ * ```
+ */
+export const BoxplotSeries: EC<BoxplotSeriesProps> = () => <></>;
+
+BoxplotSeries.optionOf = seriesOptionCreator('boxplot');
+
+BoxplotSeries.loadModule = chartLoader(['BoxplotChart']);
+
+export type EffectScatterSeriesProps = SeriesProps<
+    RegisteredSeriesOption['effectScatter']
+>;
+/**
+ * @example
+ * ```tsx
+ * <EffectScatterSeries data={[[10, 20], [20, 30]]} />
+ * ```
+ */
+export const EffectScatterSeries: EC<EffectScatterSeriesProps> = () => <></>;
+
+EffectScatterSeries.optionOf = seriesOptionCreator('effectScatter');
+
+EffectScatterSeries.loadModule = chartLoader(['EffectScatterChart']);
+
+export type PictorialBarSeriesProps = SeriesProps<
+    RegisteredSeriesOption['pictorialBar']
+>;
+/**
+ * @example
+ * ```tsx
+ * <PictorialBarSeries data={[10, 20, 30]} />
+ * ```
+ */
+export const PictorialBarSeries: EC<PictorialBarSeriesProps> = () => <></>;
+
+PictorialBarSeries.optionOf = seriesOptionCreator('pictorialBar');
+
+PictorialBarSeries.loadModule = chartLoader(['PictorialBarChart']);
