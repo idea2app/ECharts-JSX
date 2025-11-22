@@ -27,10 +27,3 @@ jobs:
               run: npm publish --access public --provenance
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-            - name: Update document
-              uses: peaceiris/actions-gh-pages@v4
-              with:
-                  publish_dir: ./docs
-                  personal_token: ${{ secrets.GITHUB_TOKEN }}
-                  force_orphan: true
