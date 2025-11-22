@@ -25,7 +25,7 @@
     "module": "dist/index.js",
     "main": "dist/index.umd.js",
     "dependencies": {
-        "echarts": "^5.4.3",
+        "echarts": "^6.0.0",
         "lodash": "^4.17.21",
         "web-utility": "^4.1.3"
     },
